@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, shell, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, Tray, shell, ipcMain, dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const Store = require('electron-store');
@@ -33,6 +33,14 @@ function createWindow() {
             { role: 'paste', label: 'Pegar' },
         ]);
         contextMenu.popup(mainWindow);
+    });
+
+    // Atajo de teclado CTRL+P para abrir ajustes
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+        if (input.control && !input.shift && !input.alt && !input.meta && input.key.toLowerCase() === 'p') {
+            openSettingsWindow();
+            event.preventDefault();
+        }
     });
 
     mainWindow.on('minimize', function (event) {
@@ -131,6 +139,29 @@ ipcMain.on('set-menu-bar', (event, showMenuBar) => {
 // IPC para buscar actualizaciones
 ipcMain.on('buscar-actualizacion', () => {
     autoUpdater.checkForUpdatesAndNotify();
+});
+
+// Mostrar alerta cuando haya una actualización disponible
+autoUpdater.on('update-available', () => {
+    if (mainWindow) {
+        dialog.showMessageBox(mainWindow, {
+            type: 'info',
+            title: 'Actualización disponible',
+            message: '¡Hay una nueva actualización disponible! Se descargará en segundo plano y se instalará al reiniciar la aplicación.',
+            buttons: ['OK']
+        });
+    }
+});
+
+autoUpdater.on('update-downloaded', () => {
+    if (mainWindow) {
+        dialog.showMessageBox(mainWindow, {
+            type: 'info',
+            title: 'Actualización lista',
+            message: 'La actualización se ha descargado. Se instalará cuando cierres la aplicación.',
+            buttons: ['OK']
+        });
+    }
 });
 
 app.whenReady().then(() => {
