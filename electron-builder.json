@@ -4,11 +4,12 @@
   "files": [
     "src/**/*"
   ],
-  "extraResources": [
-    {
-      "from": "build/icon.ico",
-      "to": "build/icon.ico"
-    }
+  "extraFiles": [
+      {
+        "from": "build/icon.ico",
+        "to": "build/icon.ico",
+        "filter": "**/*"
+      }
   ],
   "win": {
     "target": [
