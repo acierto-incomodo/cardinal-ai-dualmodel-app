@@ -2,8 +2,13 @@
   "appId": "com.stormgamesstudios.cardinalai",
   "productName": "Cardinal AI DualModel App",  
   "files": [
-    "src/**/*",
-    "build/icon.ico"
+    "src/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": "build/icon.ico",
+      "to": "icon.ico"
+    }
   ],
   "win": {
     "target": [
