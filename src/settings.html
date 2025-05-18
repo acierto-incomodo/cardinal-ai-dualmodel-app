@@ -19,16 +19,24 @@
         <input type="checkbox" id="startupOption">
         Iniciar con Windows
     </label>
+    <label>
+        <input type="checkbox" id="menuBarOption">
+        Mostrar barra de menú
+    </label>
     <button id="guardarBtn">Guardar</button>
 
     <script>
-        // Puedes comunicarte con el preload.js para guardar preferencias
+        // Ejemplo usando ipcRenderer expuesto desde preload.js
         const guardarBtn = document.getElementById('guardarBtn');
         guardarBtn.onclick = () => {
             const tray = document.getElementById('trayOption').checked;
             const startup = document.getElementById('startupOption').checked;
-            // Aquí puedes usar window.sessionAPI o ipcRenderer para guardar las preferencias
-            alert('Preferencias guardadas (implementa la lógica en preload.js)');
+            const menuBar = document.getElementById('menuBarOption').checked;
+            // Envía las preferencias al proceso principal (debes exponer ipcRenderer en preload.js)
+            if (window.electronAPI) {
+                window.electronAPI.setPreferences({ tray, startup, menuBar });
+            }
+            alert('Preferencias guardadas');
         };
     </script>
 </body>

@@ -1,7 +1,7 @@
 {
   "name": "cardinal-ai-dualmodel-app",
-  "version": "1.0.0",
-  "description": "An Electron application that saves login data and renders a specific webpage.",
+  "version": "1.0.1",
+  "description": "Cardinal AI DualModel App is a desktop application that allows users to interact with the Cardinal AI model, providing a user-friendly interface for generating and managing AI-generated content.",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
