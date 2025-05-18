@@ -7,7 +7,7 @@
   "extraResources": [
     {
       "from": "build/icon.ico",
-      "to": "icon.ico"
+      "to": "build/icon.ico"
     }
   ],
   "win": {
