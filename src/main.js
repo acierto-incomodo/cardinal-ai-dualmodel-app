@@ -64,7 +64,7 @@ function createTray() {
         iconPath = path.join(process.resourcesPath, 'icon.ico');
     } else {
         // En desarrollo
-        iconPath = path.join(__dirname, '../build/icon.ico');
+        iconPath = path.join(__dirname, 'build/icon.ico');
     }
 
     tray = new Tray(iconPath);
