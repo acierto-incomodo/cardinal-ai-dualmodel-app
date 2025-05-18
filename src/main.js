@@ -57,51 +57,49 @@ function createWindow() {
     });
 }
 
-function createTray() {
-    let iconPath;
-    if (app.isPackaged) {
-        // En producción, el icono se copia a process.resourcesPath
-        iconPath = path.join(process.resourcesPath, 'icon.ico');
-    } else {
-        // En desarrollo
-        iconPath = path.join(__dirname, 'resources/build/icon.ico');
-    }
+// function createTray() {
+//     let iconPath;
+//     if (app.isPackaged) {
+//         iconPath = path.join(process.resourcesPath, 'icon.ico');
+//     } else {
+//         iconPath = path.join(__dirname, 'resources/build/icon.ico');
+//     }
 
-    tray = new Tray(iconPath);
-    const contextMenu = Menu.buildFromTemplate([
-        {
-            label: 'Mostrar',
-            click: () => {
-                mainWindow.show();
-            }
-        },
-        {
-            label: 'Buscar actualización',
-            click: () => {
-                autoUpdater.checkForUpdatesAndNotify();
-            }
-        },
-        {
-            label: 'Ajustes',
-            click: () => {
-                openSettingsWindow();
-            }
-        },
-        {
-            label: 'Cerrar app',
-            click: () => {
-                app.isQuiting = true;
-                app.quit();
-            }
-        }
-    ]);
-    tray.setToolTip('Cardinal AI DualModel App');
-    tray.setContextMenu(contextMenu);
+//     tray = new Tray(iconPath);
+//     const contextMenu = Menu.buildFromTemplate([
+//         {
+//             label: 'Mostrar',
+//             click: () => {
+//                 mainWindow.show();
+//             }
+//         },
+//         {
+//             label: 'Buscar actualización',
+//             click: () => {
+//                 autoUpdater.checkForUpdatesAndNotify();
+//             }
+//         },
+//         {
+//             label: 'Ajustes',
+//             click: () => {
+//                 openSettingsWindow();
+//             }
+//         },
+//         {
+//             label: 'Cerrar app',
+//             click: () => {
+//                 app.isQuiting = true;
+//                 app.quit();
+//             }
+//         }
+//     ]);
+//     tray.setToolTip('Cardinal AI DualModel App');
+//     tray.setContextMenu(contextMenu);
 
-    tray.on('double-click', () => {
-        mainWindow.show();
-    });
-}
+//     tray.on('double-click', () => {
+//         mainWindow.show();
+//     });
+// }
 
 function openSettingsWindow() {
     if (settingsWindow) {
@@ -166,7 +164,7 @@ autoUpdater.on('update-downloaded', () => {
 
 app.whenReady().then(() => {
     createWindow();
-    createTray();
+    // createTray(); // Tray deshabilitado temporalmente
     autoUpdater.checkForUpdatesAndNotify();
 });
 
