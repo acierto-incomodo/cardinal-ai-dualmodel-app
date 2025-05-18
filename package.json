@@ -1,12 +1,15 @@
 {
   "name": "cardinal-ai-dualmodel-app",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Cardinal AI DualModel App is a desktop application that allows users to interact with the Cardinal AI model, providing a user-friendly interface for generating and managing AI-generated content.",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "install": "npm install",
+    "directInstallBuild": "npm run install && npm run build",
+    "directStart": "npm run install && npm start"
   },
   "dependencies": {
     "electron-store": "^8.1.0",
@@ -26,16 +29,43 @@
   "build": {
     "appId": "com.stormgamesstudios.cardinalai",
     "productName": "Cardinal AI DualModel App",
-    "win": {
-      "target": "nsis",
-      "icon": "build/icon.ico"
-    },
-    "publish": [
+    "extraResources": [
       {
-        "provider": "github",
-        "owner": "acierto-incomodo",
-        "repo": "cardinal-ai-dualmodel-app"
+        "from": "build/icon.ico",
+        "to": "build/icon.ico",
+        "filter": "**/*"
       }
-    ]
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "publish": [
+        {
+          "provider": "github",
+          "owner": "acierto-incomodo",
+          "repo": "cardinal-ai-dualmodel-app",
+          "releaseType": "release"
+        }
+      ]
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": false
+    }
   }
 }
