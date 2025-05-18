@@ -1,0 +1,36 @@
+{
+  "appId": "com.stormgamesstudios.cardinalai",
+  "productName": "Cardinal AI DualModel App",  
+  "files": [
+    "src/**/*"
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "acierto-incomodo",
+        "repo": "cardinal-ai-dualmodel-app",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "mac": {
+    "target": "dmg"
+  },
+  "linux": {
+    "target": "AppImage"
+  },
+  "nsis": {
+    "oneClick": true,
+    "perMachine": true,
+    "allowToChangeInstallationDirectory": true
+  }
+}
