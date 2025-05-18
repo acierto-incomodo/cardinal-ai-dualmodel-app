@@ -50,13 +50,10 @@ function createWindow() {
 }
 
 function createTray() {
-    // Detecta si está empaquetado
-    const isPackaged = app.isPackaged;
     let iconPath;
-
-    if (isPackaged) {
-        // Cuando está empaquetado, el icono suele estar en el mismo nivel que el ejecutable
-        iconPath = path.join(process.resourcesPath, 'build', 'icon.ico');
+    if (app.isPackaged) {
+        // En producción, el icono se copia a process.resourcesPath
+        iconPath = path.join(process.resourcesPath, 'icon.ico');
     } else {
         // En desarrollo
         iconPath = path.join(__dirname, '../build/icon.ico');
@@ -129,6 +126,11 @@ ipcMain.on('set-menu-bar', (event, showMenuBar) => {
         mainWindow.setAutoHideMenuBar(!showMenuBar);
         mainWindow.setMenuBarVisibility(showMenuBar);
     }
+});
+
+// IPC para buscar actualizaciones
+ipcMain.on('buscar-actualizacion', () => {
+    autoUpdater.checkForUpdatesAndNotify();
 });
 
 app.whenReady().then(() => {

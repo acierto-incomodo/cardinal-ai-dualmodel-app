@@ -2,14 +2,16 @@
   "appId": "com.stormgamesstudios.cardinalai",
   "productName": "Cardinal AI DualModel App",  
   "files": [
-    "src/**/*"
+    "src/**/*",
+    "build/icon.ico"
   ],
   "win": {
     "target": [
       {
         "target": "nsis",
         "arch": [
-          "x64"
+          "x64",
+          "ia32"
         ]
       }
     ],

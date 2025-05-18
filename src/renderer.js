@@ -21,6 +21,9 @@ window.sessionAPI.guardarSesion('mi_token_de_sesion');
 const token = window.sessionAPI.obtenerSesion();
 console.log(token);
 
+// Puedes llamar a esto desde DevTools para forzar la búsqueda de actualización:
+window.electronAPI.buscarActualizacion();
+
 function loadWebPage() {
     const webview = document.getElementById('webview');
     webview.src = 'https://cardinal-ai-dualmodel.vercel.app';
