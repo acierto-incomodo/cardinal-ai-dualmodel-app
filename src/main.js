@@ -28,6 +28,12 @@ function createWindow() {
     // Menú contextual (clic derecho) con copiar, pegar y cortar
     mainWindow.webContents.on('context-menu', (event, params) => {
         const contextMenu = Menu.buildFromTemplate([
+            { label: 'Buscar actualización', click: () => autoUpdater.checkForUpdatesAndNotify() },
+            { label: 'Ajustes', click: () => openSettingsWindow() },
+            { type: 'separator' },
+            { label: 'Recargar página', click: () => mainWindow.reload() },
+            { label: 'Forzar recarga', click: () => mainWindow.webContents.reloadIgnoringCache() },
+            { type: 'separator' },
             { role: 'cut', label: 'Cortar' },
             { role: 'copy', label: 'Copiar' },
             { role: 'paste', label: 'Pegar' },
@@ -43,12 +49,12 @@ function createWindow() {
         }
     });
 
-    mainWindow.on('minimize', function (event) {
+    mainWindow.on('minimize', (event) => {
         event.preventDefault();
         mainWindow.hide();
     });
 
-    mainWindow.on('close', function (event) {
+    mainWindow.on('close', (event) => {
         if (!app.isQuiting) {
             event.preventDefault();
             mainWindow.hide();
@@ -57,49 +63,49 @@ function createWindow() {
     });
 }
 
-// function createTray() {
-//     let iconPath;
-//     if (app.isPackaged) {
-//         iconPath = path.join(process.resourcesPath, 'icon.ico');
-//     } else {
-//         iconPath = path.join(__dirname, 'resources/build/icon.ico');
-//     }
+function createTray() {
+    let iconPath;
+    if (app.isPackaged) {
+        iconPath = path.join(process.resourcesPath, 'icon.ico');
+    } else {
+        iconPath = path.join(process.resourcesPath, 'build/icon.ico');
+    }
 
-//     tray = new Tray(iconPath);
-//     const contextMenu = Menu.buildFromTemplate([
-//         {
-//             label: 'Mostrar',
-//             click: () => {
-//                 mainWindow.show();
-//             }
-//         },
-//         {
-//             label: 'Buscar actualización',
-//             click: () => {
-//                 autoUpdater.checkForUpdatesAndNotify();
-//             }
-//         },
-//         {
-//             label: 'Ajustes',
-//             click: () => {
-//                 openSettingsWindow();
-//             }
-//         },
-//         {
-//             label: 'Cerrar app',
-//             click: () => {
-//                 app.isQuiting = true;
-//                 app.quit();
-//             }
-//         }
-//     ]);
-//     tray.setToolTip('Cardinal AI DualModel App');
-//     tray.setContextMenu(contextMenu);
+    tray = new Tray(iconPath);
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: 'Mostrar',
+            click: () => {
+                mainWindow.show();
+            }
+        },
+        {
+            label: 'Buscar actualización',
+            click: () => {
+                autoUpdater.checkForUpdatesAndNotify();
+            }
+        },
+        {
+            label: 'Ajustes',
+            click: () => {
+                openSettingsWindow();
+            }
+        },
+        {
+            label: 'Cerrar app',
+            click: () => {
+                app.isQuiting = true;
+                app.quit();
+            }
+        }
+    ]);
+    tray.setToolTip('Cardinal AI DualModel App');
+    tray.setContextMenu(contextMenu);
 
-//     tray.on('double-click', () => {
-//         mainWindow.show();
-//     });
-// }
+    tray.on('double-click', () => {
+        mainWindow.show();
+    });
+}
 
 function openSettingsWindow() {
     if (settingsWindow) {
@@ -140,27 +146,39 @@ ipcMain.on('buscar-actualizacion', () => {
 });
 
 // Mostrar alerta cuando haya una actualización disponible
-autoUpdater.on('update-available', () => {
-    if (mainWindow) {
-        dialog.showMessageBox(mainWindow, {
-            type: 'info',
-            title: 'Actualización disponible',
-            message: '¡Hay una nueva actualización disponible! Se descargará en segundo plano y se instalará al reiniciar la aplicación.',
-            buttons: ['OK']
-        });
-    }
-});
+// Comprobar actualizaciones al iniciar
+    autoUpdater.checkForUpdatesAndNotify();
 
-autoUpdater.on('update-downloaded', () => {
-    if (mainWindow) {
-        dialog.showMessageBox(mainWindow, {
-            type: 'info',
-            title: 'Actualización lista',
-            message: 'La actualización se ha descargado. Se instalará cuando cierres la aplicación.',
-            buttons: ['OK']
+    // Eventos del autoUpdater
+    autoUpdater.on("update-available", () => {
+        dialog.showMessageBox({
+            type: "info",
+            title: "Actualización Disponible",
+            message: "Hay una nueva versión disponible. Se descargará en segundo plano. Si no se descarga automáticamente, puedes descargarla manualmente.",
+            buttons: ["Descarga manual", "OK"],
+            defaultId: 1, // Preselecciona el botón "OK"
+            cancelId: 1 // Si el usuario cierra el cuadro, se elige "OK"
+        }).then(result => {
+            if (result.response === 0) { // Si elige "Descarga manual"
+                shell.openExternal("https://github.com/acierto-incomodo/cardinal-ai-dualmodel/releases/latest");
+            }
         });
-    }
-});
+    });    
+
+    autoUpdater.on("update-downloaded", () => {
+        dialog.showMessageBox({
+            type: "info",
+            title: "Actualización Lista",
+            message: "La actualización se descargó. ¿Quieres reiniciar para aplicar la actualización?",
+            buttons: ["Reiniciar"]
+        }).then(result => {
+            if (result.response === 0) autoUpdater.quitAndInstall();
+        });
+    });
+
+    autoUpdater.on("error", (error) => {
+        console.error("Error en la actualización:", error);
+    });
 
 app.whenReady().then(() => {
     createWindow();
@@ -171,7 +189,7 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     // No cerrar la app si está en la bandeja
     if (process.platform !== 'darwin') {
-        // app.quit();
+        app.quit();
     }
 });
 
