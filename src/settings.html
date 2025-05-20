@@ -23,21 +23,12 @@
         <input type="checkbox" id="menuBarOption">
         Mostrar barra de menú
     </label>
+     <label>
+        <input type="checkbox" id="shortcutEnabled">
+        Activar atajo de teclado (Alt+Space)
+    </label>
     <button id="guardarBtn">Guardar</button>
 
-    <script>
-        // Ejemplo usando ipcRenderer expuesto desde preload.js
-        const guardarBtn = document.getElementById('guardarBtn');
-        guardarBtn.onclick = () => {
-            const tray = document.getElementById('trayOption').checked;
-            const startup = document.getElementById('startupOption').checked;
-            const menuBar = document.getElementById('menuBarOption').checked;
-            // Envía las preferencias al proceso principal (debes exponer ipcRenderer en preload.js)
-            if (window.electronAPI) {
-                window.electronAPI.setPreferences({ tray, startup, menuBar });
-            }
-            alert('Preferencias guardadas');
-        };
-    </script>
+    <script src="./settings.js"></script>
 </body>
 </html>

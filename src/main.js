@@ -7,14 +7,72 @@ const store = new Store();
 let mainWindow;
 let tray;
 let settingsWindow;
-let shortcutEnabled = false;
+let shortcutEnabled = false; // Estado inicial del atajo
+let updateWindow = null;
+
+// Crear ventana de progreso de actualización
+function showUpdateProgressWindow() {
+    if (updateWindow) {
+        updateWindow.focus();
+        return;
+    }
+    updateWindow = new BrowserWindow({
+        width: 400,
+        height: 180,
+        resizable: false,
+        minimizable: false,
+        maximizable: false,
+        parent: mainWindow,
+        modal: true,
+        title: "Descargando actualización...",
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    });
+    updateWindow.removeMenu();
+    updateWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(`
+        <html>
+        <head>
+            <title>Actualización</title>
+            <style>
+                body { font-family: sans-serif; margin: 20px; }
+                #progressBar { width: 100%; height: 24px; background: #eee; border-radius: 8px; overflow: hidden; }
+                #progress { height: 100%; background: #4caf50; width: 0%; transition: width 0.2s; }
+                #info { margin-top: 10px; }
+            </style>
+        </head>
+        <body>
+            <h3>Descargando actualización...</h3>
+            <div id="progressBar"><div id="progress"></div></div>
+            <div id="info">Preparando descarga...</div>
+            <script>
+                const { ipcRenderer } = require('electron');
+                ipcRenderer.on('download-progress', (event, progressObj) => {
+                    document.getElementById('progress').style.width = progressObj.percent + '%';
+                    document.getElementById('info').innerText = 
+                        'Descargado: ' + Math.round(progressObj.transferred / 1024 / 1024) + ' MB de ' +
+                        Math.round(progressObj.total / 1024 / 1024) + ' MB (' +
+                        Math.round(progressObj.percent) + '%) - Velocidad: ' +
+                        Math.round(progressObj.bytesPerSecond / 1024) + ' KB/s';
+                });
+                ipcRenderer.on('download-complete', () => {
+                    document.getElementById('info').innerText = '¡Descarga completa!';
+                });
+            </script>
+        </body>
+        </html>
+    `));
+    updateWindow.on('closed', () => {
+        updateWindow = null;
+    });
+}
 
 function createWindow() {
     const showMenuBar = store.get('showMenuBar', false);
     const primaryDisplay = screen.getPrimaryDisplay();
     const { width, height } = primaryDisplay.workAreaSize;
 
-    // Carga el icono y lo redimensiona para el tray
     const iconPath = app.isPackaged
         ? path.join(process.resourcesPath, 'icon.ico')
         : path.join(__dirname, '../build/icon.ico');
@@ -33,12 +91,9 @@ function createWindow() {
         },
     });
 
-    // Abrir la ventana maximizada al iniciar
     mainWindow.maximize();
-
     mainWindow.loadURL('https://cardinal-ai-h4rt.vercel.app');
 
-    // Inyectar CSS para scrollbars modernos estilo Windows 11/Edge
     mainWindow.webContents.on('did-finish-load', () => {
         mainWindow.webContents.insertCSS(`
             ::-webkit-scrollbar {
@@ -67,7 +122,6 @@ function createWindow() {
                 background: url('data:image/svg+xml;utf8,<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><polygon points="2,3 8,3 5,8" fill="gray"/></svg>') no-repeat center;
                 background-size: 8px 8px;
             }
-            /* Oculta los botones inactivos (cuando no hay más para desplazar) */
             ::-webkit-scrollbar-button:single-button:vertical:decrement:inactive,
             ::-webkit-scrollbar-button:single-button:vertical:increment:inactive {
                 display: none;
@@ -75,7 +129,6 @@ function createWindow() {
         `);
     });
 
-    // Menú contextual (clic derecho)
     mainWindow.webContents.on('context-menu', () => {
         const contextMenu = Menu.buildFromTemplate([
             { label: 'Buscar actualización', click: () => autoUpdater.checkForUpdatesAndNotify() },
@@ -91,7 +144,6 @@ function createWindow() {
         contextMenu.popup(mainWindow);
     });
 
-    // Atajo de teclado CTRL+P para abrir ajustes
     mainWindow.webContents.on('before-input-event', (event, input) => {
         if (input.control && !input.shift && !input.alt && !input.meta && input.key.toLowerCase() === 'p') {
             openSettingsWindow();
@@ -105,11 +157,15 @@ function createWindow() {
     });
 
     mainWindow.on('close', (event) => {
-        if (!app.isQuiting) {
+        // Usar la preferencia 'trayOption'
+        const trayOption = store.get('trayOption', true); // Por defecto, mantener en bandeja
+        if (!app.isQuiting && trayOption) {
             event.preventDefault();
             mainWindow.hide();
+        } else if (!app.isQuiting && !trayOption) {
+            // Si trayOption es false, permitir que la aplicación se cierre normalmente
+            app.quit();
         }
-        return false;
     });
 }
 
@@ -120,7 +176,10 @@ function createTray() {
     const icon = nativeImage.createFromPath(iconPath);
     const smallIcon = icon.isEmpty() ? undefined : icon.resize({ width: 16, height: 16 });
 
-    // Leer el estado guardado del acceso directo
+    // Leer el estado guardado de las preferencias
+    const trayOption = store.get('trayOption', true);
+    const startupOption = store.get('startupOption', false);
+    const menuBarOption = store.get('showMenuBar', false);
     shortcutEnabled = store.get('shortcutEnabled', false);
 
     tray = new Tray(icon);
@@ -138,12 +197,43 @@ function createTray() {
             }
         },
         {
-            label: 'Activar acceso directo Alt+Space',
+            label: 'Mantener en la bandeja al cerrar',
+            type: 'checkbox',
+            checked: trayOption,
+            click: (menuItem) => {
+                store.set('trayOption', menuItem.checked);
+            }
+        },
+        {
+            label: 'Iniciar con Windows',
+            type: 'checkbox',
+            checked: startupOption,
+            click: (menuItem) => {
+                store.set('startupOption', menuItem.checked);
+                app.setLoginItemSettings({
+                    openAtLogin: !!menuItem.checked
+                });
+            }
+        },
+        {
+            label: 'Mostrar barra de menú',
+            type: 'checkbox',
+            checked: menuBarOption,
+            click: (menuItem) => {
+                store.set('showMenuBar', menuItem.checked);
+                if (mainWindow) {
+                    mainWindow.setAutoHideMenuBar(!menuItem.checked);
+                    mainWindow.setMenuBarVisibility(menuItem.checked);
+                }
+            }
+        },
+        {
+            label: 'Activar atajo de teclado (Alt+Space)',
             type: 'checkbox',
             checked: shortcutEnabled,
             click: (menuItem) => {
                 shortcutEnabled = menuItem.checked;
-                store.set('shortcutEnabled', shortcutEnabled); // Guardar preferencia
+                store.set('shortcutEnabled', shortcutEnabled);
                 if (shortcutEnabled) {
                     globalShortcut.register('Alt+Space', () => {
                         if (mainWindow.isVisible()) {
@@ -159,10 +249,6 @@ function createTray() {
         },
         { type: 'separator' },
         {
-            label: 'Ajustes',
-            click: () => openSettingsWindow()
-        },
-        {
             label: 'Buscar actualización',
             click: () => autoUpdater.checkForUpdatesAndNotify()
         },
@@ -175,10 +261,9 @@ function createTray() {
             }
         }
     ]);
-    tray.setToolTip('Cardinal AI DualModel App');
+    tray.setToolTip('Cardinal AI MultiModel App');
     tray.setContextMenu(contextMenu);
 
-    // Mostrar/ocultar ventana con clic izquierdo en el tray
     tray.on('click', () => {
         if (mainWindow.isVisible()) {
             mainWindow.hide();
@@ -195,7 +280,7 @@ function createTray() {
         }
     });
 
-    // Registrar el acceso directo si estaba activado
+    // Registrar el acceso directo si estaba activado al inicio
     if (shortcutEnabled) {
         globalShortcut.register('Alt+Space', () => {
             if (mainWindow.isVisible()) {
@@ -240,9 +325,13 @@ ipcMain.on('set-menu-bar', (event, showMenuBar) => {
     }
 });
 
-// IPC para buscar actualizaciones
 ipcMain.on('buscar-actualizacion', () => {
     autoUpdater.checkForUpdatesAndNotify();
+});
+
+ipcMain.on('save-user-data', (event, userData) => {
+  store.set('userData', userData);
+  console.log('User data saved:', userData);
 });
 
 // IPC para guardar preferencias desde settings
@@ -277,35 +366,43 @@ ipcMain.on('set-preferences', (event, prefs) => {
     } else {
         globalShortcut.unregister('Alt+Space');
     }
+
+    // Actualizar el estado del shortcutEnabled en el proceso principal
+    shortcutEnabled = prefs.shortcutEnabled;
 });
 
 // IPC para obtener preferencias actuales
 ipcMain.handle('get-preferences', () => {
+    // Por defecto, 'trayOption' es true (mantener en bandeja)
+    // 'shortcutEnabled' debe reflejar el estado actual del atajo
     return {
-        trayOption: store.get('trayOption', false),
+        trayOption: store.get('trayOption', true),
         startupOption: store.get('startupOption', false),
         menuBarOption: store.get('showMenuBar', false),
-        shortcutEnabled: store.get('shortcutEnabled', false)
+        shortcutEnabled: store.get('shortcutEnabled', false) // Este valor se actualiza en createTray y set-preferences
     };
 });
 
-// Mostrar alerta cuando haya una actualización disponible
 autoUpdater.on("update-available", () => {
-    dialog.showMessageBox({
-        type: "info",
-        title: "Actualización Disponible",
-        message: "Hay una nueva versión disponible. Se descargará en segundo plano. Si no se descarga automáticamente, puedes descargarla manualmente.",
-        buttons: ["Descarga manual", "OK"],
-        defaultId: 1,
-        cancelId: 1
-    }).then(result => {
-        if (result.response === 0) {
-            shell.openExternal("https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/releases/latest");
-        }
-    });
+    showUpdateProgressWindow();
 });
 
+// Evento de progreso de descarga
+autoUpdater.on('download-progress', (progressObj) => {
+    if (updateWindow) {
+        updateWindow.webContents.send('download-progress', progressObj);
+    }
+});
+
+// Evento cuando la descarga termina
 autoUpdater.on("update-downloaded", () => {
+    if (updateWindow) {
+        updateWindow.webContents.send('download-complete');
+        setTimeout(() => {
+            updateWindow.close();
+            updateWindow = null;
+        }, 1500);
+    }
     dialog.showMessageBox({
         type: "info",
         title: "Actualización Lista",
@@ -318,16 +415,67 @@ autoUpdater.on("update-downloaded", () => {
 
 autoUpdater.on("error", (error) => {
     console.error("Error en la actualización:", error);
+
+    // Mostrar ventana con enlace de descarga manual
+    if (updateWindow) {
+        updateWindow.close();
+        updateWindow = null;
+    }
+
+    const manualUpdateWindow = new BrowserWindow({
+        width: 420,
+        height: 220,
+        resizable: false,
+        minimizable: false,
+        maximizable: false,
+        parent: mainWindow,
+        modal: true,
+        title: "Descarga manual de actualización",
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    });
+    manualUpdateWindow.removeMenu();
+    manualUpdateWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(`
+        <html>
+        <head>
+            <title>Descarga manual</title>
+            <style>
+                body { font-family: sans-serif; margin: 20px; }
+                #enlace { margin-top: 20px; }
+                a { color: #1976d2; font-size: 16px; word-break: break-all; }
+                #msg { margin-bottom: 10px; }
+            </style>
+        </head>
+        <body>
+            <h3>Descarga manual de actualización</h3>
+            <div id="msg">No se pudo descargar la actualización automáticamente.<br>
+            Puedes descargarla manualmente desde el siguiente enlace:</div>
+            <div id="enlace">
+                <a href="https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/releases/latest" id="downloadLink" target="_blank">
+                    https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/releases/latest
+                </a>
+            </div>
+            <script>
+                // Abrir el enlace en el navegador externo
+                const { shell } = require('electron');
+                document.getElementById('downloadLink').onclick = (e) => {
+                    e.preventDefault();
+                    shell.openExternal(e.target.href);
+                };
+            </script>
+        </body>
+        </html>
+    `));
 });
 
-// Solo permitir una instancia de la app
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
     app.quit();
 } else {
     app.on('second-instance', () => {
-        // Si el usuario intenta abrir otra instancia, mostrar la ventana principal
         if (mainWindow) {
             if (mainWindow.isMinimized()) mainWindow.restore();
             mainWindow.show();
@@ -346,8 +494,10 @@ if (!gotTheLock) {
     });
 
     app.on('window-all-closed', () => {
+        // La lógica para cerrar completamente o mantener en bandeja se maneja en mainWindow.on('close')
         if (process.platform !== 'darwin') {
-            app.quit();
+             // Si trayOption es false, app.quit() ya se llama en mainWindow.on('close')
+             // Si trayOption es true, la app no se cierra, solo se oculta
         }
     });
 
