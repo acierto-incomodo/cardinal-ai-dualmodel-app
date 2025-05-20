@@ -80,6 +80,9 @@ function createTray() {
     const icon = nativeImage.createFromPath(iconPath);
     const smallIcon = icon.isEmpty() ? undefined : icon.resize({ width: 16, height: 16 });
 
+    // Leer el estado guardado del acceso directo
+    shortcutEnabled = store.get('shortcutEnabled', false);
+
     tray = new Tray(icon);
 
     const contextMenu = Menu.buildFromTemplate([
@@ -100,6 +103,7 @@ function createTray() {
             checked: shortcutEnabled,
             click: (menuItem) => {
                 shortcutEnabled = menuItem.checked;
+                store.set('shortcutEnabled', shortcutEnabled); // Guardar preferencia
                 if (shortcutEnabled) {
                     globalShortcut.register('Alt+Space', () => {
                         if (mainWindow.isVisible()) {
@@ -141,6 +145,17 @@ function createTray() {
             mainWindow.show();
         }
     });
+
+    // Registrar el acceso directo si estaba activado
+    if (shortcutEnabled) {
+        globalShortcut.register('Alt+Space', () => {
+            if (mainWindow.isVisible()) {
+                mainWindow.hide();
+            } else {
+                mainWindow.show();
+            }
+        });
+    }
 }
 
 function openSettingsWindow() {
@@ -181,6 +196,50 @@ ipcMain.on('buscar-actualizacion', () => {
     autoUpdater.checkForUpdatesAndNotify();
 });
 
+// IPC para guardar preferencias desde settings
+ipcMain.on('set-preferences', (event, prefs) => {
+    store.set('trayOption', prefs.trayOption);
+    store.set('startupOption', prefs.startupOption);
+    store.set('showMenuBar', prefs.menuBarOption);
+    store.set('shortcutEnabled', prefs.shortcutEnabled);
+
+    // Aplicar barra de menú
+    if (mainWindow) {
+        mainWindow.setAutoHideMenuBar(!prefs.menuBarOption);
+        mainWindow.setMenuBarVisibility(prefs.menuBarOption);
+    }
+
+    // Aplicar inicio con Windows
+    app.setLoginItemSettings({
+        openAtLogin: !!prefs.startupOption
+    });
+
+    // Aplicar acceso directo Alt+Space
+    if (prefs.shortcutEnabled) {
+        if (!globalShortcut.isRegistered('Alt+Space')) {
+            globalShortcut.register('Alt+Space', () => {
+                if (mainWindow.isVisible()) {
+                    mainWindow.hide();
+                } else {
+                    mainWindow.show();
+                }
+            });
+        }
+    } else {
+        globalShortcut.unregister('Alt+Space');
+    }
+});
+
+// IPC para obtener preferencias actuales
+ipcMain.handle('get-preferences', () => {
+    return {
+        trayOption: store.get('trayOption', false),
+        startupOption: store.get('startupOption', false),
+        menuBarOption: store.get('showMenuBar', false),
+        shortcutEnabled: store.get('shortcutEnabled', false)
+    };
+});
+
 // Mostrar alerta cuando haya una actualización disponible
 autoUpdater.on("update-available", () => {
     dialog.showMessageBox({
@@ -192,7 +251,7 @@ autoUpdater.on("update-available", () => {
         cancelId: 1
     }).then(result => {
         if (result.response === 0) {
-            shell.openExternal("https://github.com/acierto-incomodo/cardinal-ai-dualmodel/releases/latest");
+            shell.openExternal("https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/releases/latest");
         }
     });
 });
@@ -212,24 +271,40 @@ autoUpdater.on("error", (error) => {
     console.error("Error en la actualización:", error);
 });
 
-app.whenReady().then(() => {
-    createWindow();
-    createTray();
-    autoUpdater.checkForUpdatesAndNotify();
+// Solo permitir una instancia de la app
+const gotTheLock = app.requestSingleInstanceLock();
 
-    app.on('will-quit', () => {
-        globalShortcut.unregisterAll();
+if (!gotTheLock) {
+    app.quit();
+} else {
+    app.on('second-instance', () => {
+        // Si el usuario intenta abrir otra instancia, mostrar la ventana principal
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+            mainWindow.show();
+            mainWindow.focus();
+        }
     });
-});
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});
-
-app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
+    app.whenReady().then(() => {
         createWindow();
-    }
-});
+        createTray();
+        autoUpdater.checkForUpdatesAndNotify();
+
+        app.on('will-quit', () => {
+            globalShortcut.unregisterAll();
+        });
+    });
+
+    app.on('window-all-closed', () => {
+        if (process.platform !== 'darwin') {
+            app.quit();
+        }
+    });
+
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
+}
