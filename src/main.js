@@ -186,8 +186,17 @@ function createTray() {
 
     const contextMenu = Menu.buildFromTemplate([
         {
-            label: 'Mostrar/Ocultar',
+            label: 'CardinalAI',
             icon: smallIcon,
+            enabled: false // Solo texto, no clickeable
+        },
+        { type: 'separator' },
+        {
+            label: 'Ajustes',
+            enabled: false // Solo texto, no clickeable
+        },
+        {
+            label: 'Mostrar/Ocultar',
             click: () => {
                 if (mainWindow.isVisible()) {
                     mainWindow.hide();
@@ -248,6 +257,10 @@ function createTray() {
             }
         },
         { type: 'separator' },
+        {
+            label: 'Actualizaciones',
+            enabled: false // Solo texto, no clickeable
+        },
         {
             label: 'Buscar actualización',
             click: () => autoUpdater.checkForUpdatesAndNotify()
