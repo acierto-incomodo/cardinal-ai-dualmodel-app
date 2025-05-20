@@ -33,7 +33,47 @@ function createWindow() {
         },
     });
 
+    // Abrir la ventana maximizada al iniciar
+    mainWindow.maximize();
+
     mainWindow.loadURL('https://cardinal-ai-h4rt.vercel.app');
+
+    // Inyectar CSS para scrollbars modernos estilo Windows 11/Edge
+    mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.insertCSS(`
+            ::-webkit-scrollbar {
+                width: 10px;
+                height: 10px;
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: rgba(120, 120, 120, 0.25);
+                border-radius: 8px;
+                border: 2px solid transparent;
+                background-clip: padding-box;
+                transition: background 0.2s;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: rgba(120, 120, 120, 0.45);
+            }
+            ::-webkit-scrollbar-corner {
+                background: transparent;
+            }
+            ::-webkit-scrollbar-button:single-button:vertical:decrement {
+                background: url('data:image/svg+xml;utf8,<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><polygon points="5,2 2,7 8,7" fill="gray"/></svg>') no-repeat center;
+                background-size: 8px 8px;
+            }
+            ::-webkit-scrollbar-button:single-button:vertical:increment {
+                background: url('data:image/svg+xml;utf8,<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><polygon points="2,3 8,3 5,8" fill="gray"/></svg>') no-repeat center;
+                background-size: 8px 8px;
+            }
+            /* Oculta los botones inactivos (cuando no hay más para desplazar) */
+            ::-webkit-scrollbar-button:single-button:vertical:decrement:inactive,
+            ::-webkit-scrollbar-button:single-button:vertical:increment:inactive {
+                display: none;
+            }
+        `);
+    });
 
     // Menú contextual (clic derecho)
     mainWindow.webContents.on('context-menu', () => {
@@ -137,6 +177,15 @@ function createTray() {
     ]);
     tray.setToolTip('Cardinal AI DualModel App');
     tray.setContextMenu(contextMenu);
+
+    // Mostrar/ocultar ventana con clic izquierdo en el tray
+    tray.on('click', () => {
+        if (mainWindow.isVisible()) {
+            mainWindow.hide();
+        } else {
+            mainWindow.show();
+        }
+    });
 
     tray.on('double-click', () => {
         if (mainWindow.isVisible()) {
