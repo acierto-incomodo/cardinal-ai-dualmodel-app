@@ -10,62 +10,121 @@ let settingsWindow;
 let shortcutEnabled = false; // Estado inicial del atajo
 let updateWindow = null;
 
-// Crear ventana de progreso de actualización
-function showUpdateProgressWindow() {
-    if (updateWindow) {
-        updateWindow.focus();
-        return;
-    }
-    updateWindow = new BrowserWindow({
-        width: 400,
-        height: 180,
-        resizable: false,
-        minimizable: false,
-        maximizable: false,
-        parent: mainWindow,
-        modal: true,
-        title: "Descargando actualización...",
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
+// Método para comprobar actualizaciones
+function comprobarActualizaciones() {
+    autoUpdater.checkForUpdates()
+        .then((info) => {
+            // Si no hay actualizaciones disponibles
+            if (info.updateInfo && !info.updateInfo.version) {
+                dialog.showMessageBox({
+                    type: 'info',
+                    title: 'No hay actualizaciones',
+                    message: 'No hay actualizaciones disponibles en este momento.',
+                    buttons: ['Aceptar']
+                });
+            }
+        })
+        .catch((err) => {
+            // Si ocurre un error al comprobar las actualizaciones
+            dialog.showErrorBox('Error al comprobar actualizaciones', 'Hubo un error al comprobar si hay actualizaciones: ' + err.message);
+        });
+}
+
+// Función para configurar el menú
+function configurarMenu() {
+    const { app, BrowserWindow } = require("electron");
+
+    const menuTemplate = [
+        {
+            label: "Inicio",
+            click: () => {
+                mainWindow.loadURL('https://cardinal-ai-h4rt.vercel.app');
+            }
+        },
+        {
+            label: "Páginas",
+            submenu: [
+                {
+                    label: "Status",
+                    click: () => {
+                        mainWindow.loadURL('https://stats.uptimerobot.com/Kj5fTWCONH');
+                    }
+                },
+                {
+                    label: "Versión",
+                    click: () => {
+                        mainWindow.loadFile('./version.html'); // Cargar versión.html al hacer clic en "Versión"
+                    }
+                },
+                {
+                    label: "StormGamesStudios",
+                    click: () => {
+                        mainWindow.loadURL('https://stormgamesstudios.vercel.app');
+                    }
+                }
+            ]
+        },
+        {
+            label: "Ayuda",
+            submenu: [
+                {
+                    label: "Error de Actualización",
+                    click: () => {
+                        mainWindow.loadURL('https://cardinal-ai-h4rt.vercel.app/update-error'); // Cargar página de error de actualización
+                    }
+                }
+            ]
+        },
+        {
+            label: "Extras",
+            submenu: [
+                {
+                    label: "Mostrar Consola",
+                    accelerator: "F12",
+                    click: () => {
+                        mainWindow.webContents.openDevTools(); // Abrir herramientas de desarrollo
+                    }
+                },
+                {
+                    label: "Recargar Página",
+                    accelerator: "F5",
+                    click: () => {
+                        mainWindow.reload(); // Recargar la página
+                    }
+                },
+                {
+                    label: "Recargar (Forzoso)",
+                    accelerator: "Ctrl+F5",
+                    click: () => {
+                        mainWindow.webContents.reloadIgnoringCache(); // Recargar sin caché
+                    }
+                },
+                {
+                    label: "Cerrar Aplicación",
+                    accelerator: "Alt+F4",
+                    click: () => {
+                        app.quit(); // Cerrar la aplicación
+                    }
+                },
+                {
+                    label: "Reiniciar Aplicación",
+                    click: () => {
+                        app.relaunch(); // Reiniciar la aplicación
+                        app.quit();
+                    }
+                },
+                {
+                    label: "Comprobar Actualizaciones",
+                    click: () => {
+                        comprobarActualizaciones(); // Comprobar actualizaciones
+                    }
+                }
+            ]
         }
-    });
-    updateWindow.removeMenu();
-    updateWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(`
-        <html>
-        <head>
-            <title>Actualización</title>
-            <style>
-                body { font-family: sans-serif; margin: 20px; }
-                #progressBar { width: 100%; height: 24px; background: #eee; border-radius: 8px; overflow: hidden; }
-                #progress { height: 100%; background: #4caf50; width: 0%; transition: width 0.2s; }
-                #info { margin-top: 10px; }
-            </style>
-        </head>
-        <body>
-            <h3>Descargando actualización...</h3>
-            <div id="progressBar"><div id="progress"></div></div>
-            <div id="info">Preparando descarga...</div>
-            <script>
-                const { ipcRenderer } = require('electron');
-                ipcRenderer.on('download-progress', (event, progressObj) => {
-                    document.getElementById('progress').style.width = progressObj.percent + '%';
-                    document.getElementById('info').innerText = 
-                        'Descargado: ' + Math.round(progressObj.transferred / 1024 / 1024) + ' MB de ' +
-                        Math.round(progressObj.total / 1024 / 1024) + ' MB (' +
-                        Math.round(progressObj.percent) + '%) - Velocidad: ' +
-                        Math.round(progressObj.bytesPerSecond / 1024) + ' KB/s';
-                });
-                ipcRenderer.on('download-complete', () => {
-                    document.getElementById('info').innerText = '¡Descarga completa!';
-                });
-            </script>
-        </body>
-        </html>
-    `));
-    updateWindow.on('closed', () => {
-        updateWindow = null;
-    });
+    ];
+
+    const menu = Menu.buildFromTemplate(menuTemplate);
+    Menu.setApplicationMenu(menu); // Establecer el menú como el menú de la aplicación
 }
 
 function createWindow() {
@@ -88,10 +147,19 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             enableRemoteModule: false,
+            nodeIntegration: true,
+            webSecurity: true, // Habilitar seguridad web
         },
     });
 
-    mainWindow.maximize();
+    // Configurar el menú
+    configurarMenu();
+
+    // Si la app se inició con --background, no mostrar la ventana
+    if (!process.argv.includes('--background')) {
+        mainWindow.maximize();
+        mainWindow.show();
+    }
     mainWindow.loadURL('https://cardinal-ai-h4rt.vercel.app');
 
     mainWindow.webContents.on('did-finish-load', () => {
@@ -132,7 +200,7 @@ function createWindow() {
     mainWindow.webContents.on('context-menu', () => {
         const contextMenu = Menu.buildFromTemplate([
             { label: 'Buscar actualización', click: () => autoUpdater.checkForUpdatesAndNotify() },
-            { label: 'Ajustes', click: () => openSettingsWindow() },
+            // { label: 'Ajustes', click: () => openSettingsWindow() },
             { type: 'separator' },
             { label: 'Recargar página', click: () => mainWindow.reload() },
             { label: 'Forzar recarga', click: () => mainWindow.webContents.reloadIgnoringCache() },
@@ -166,6 +234,40 @@ function createWindow() {
             // Si trayOption es false, permitir que la aplicación se cierre normalmente
             app.quit();
         }
+    });
+
+    // Comprobar actualizaciones al iniciar
+    autoUpdater.checkForUpdatesAndNotify();
+
+    // Eventos del autoUpdater
+    autoUpdater.on("update-available", () => {
+        dialog.showMessageBox({
+            type: "info",
+            title: "Actualización Disponible",
+            message: "Hay una nueva versión disponible. Se descargará en segundo plano. Si no se descarga automáticamente, puedes descargarla manualmente.",
+            buttons: ["Descarga manual", "OK"],
+            defaultId: 1, // Preselecciona el botón "OK"
+            cancelId: 1 // Si el usuario cierra el cuadro, se elige "OK"
+        }).then(result => {
+            if (result.response === 0) { // Si elige "Descarga manual"
+                shell.openExternal("https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/releases/latest");
+            }
+        });
+    });    
+
+    autoUpdater.on("update-downloaded", () => {
+        dialog.showMessageBox({
+            type: "info",
+            title: "Actualización Lista",
+            message: "La actualización se descargó. ¿Quieres reiniciar para aplicar la actualización?",
+            buttons: ["Reiniciar"]
+        }).then(result => {
+            if (result.response === 0) autoUpdater.quitAndInstall();
+        });
+    });
+
+    autoUpdater.on("error", (error) => {
+        console.error("Error en la actualización:", error);
     });
 }
 
@@ -220,7 +322,20 @@ function createTray() {
             click: (menuItem) => {
                 store.set('startupOption', menuItem.checked);
                 app.setLoginItemSettings({
-                    openAtLogin: !!menuItem.checked
+                    openAtLogin: !!menuItem.checked,
+                    args: [] // Sin argumentos, inicia normalmente
+                });
+            }
+        },
+        {
+            label: 'Iniciar con Windows (segundo plano)',
+            type: 'checkbox',
+            checked: store.get('startupBackground', false),
+            click: (menuItem) => {
+                store.set('startupBackground', menuItem.checked);
+                app.setLoginItemSettings({
+                    openAtLogin: !!menuItem.checked,
+                    args: menuItem.checked ? ['--background'] : []
                 });
             }
         },
@@ -258,12 +373,19 @@ function createTray() {
         },
         { type: 'separator' },
         {
-            label: 'Actualizaciones',
+            label: 'Otros',
             enabled: false // Solo texto, no clickeable
         },
         {
             label: 'Buscar actualización',
             click: () => autoUpdater.checkForUpdatesAndNotify()
+        },
+        {
+            label: "Reiniciar Aplicación",
+            click: () => {
+                app.relaunch(); // Reiniciar la aplicación
+                app.quit();
+            }
         },
         { type: 'separator' },
         {
@@ -396,93 +518,6 @@ ipcMain.handle('get-preferences', () => {
     };
 });
 
-autoUpdater.on("update-available", () => {
-    showUpdateProgressWindow();
-});
-
-// Evento de progreso de descarga
-autoUpdater.on('download-progress', (progressObj) => {
-    if (updateWindow) {
-        updateWindow.webContents.send('download-progress', progressObj);
-    }
-});
-
-// Evento cuando la descarga termina
-autoUpdater.on("update-downloaded", () => {
-    if (updateWindow) {
-        updateWindow.webContents.send('download-complete');
-        setTimeout(() => {
-            updateWindow.close();
-            updateWindow = null;
-        }, 1500);
-    }
-    dialog.showMessageBox({
-        type: "info",
-        title: "Actualización Lista",
-        message: "La actualización se descargó. ¿Quieres reiniciar para aplicar la actualización?",
-        buttons: ["Reiniciar"]
-    }).then(result => {
-        if (result.response === 0) autoUpdater.quitAndInstall();
-    });
-});
-
-autoUpdater.on("error", (error) => {
-    console.error("Error en la actualización:", error);
-
-    // Mostrar ventana con enlace de descarga manual
-    if (updateWindow) {
-        updateWindow.close();
-        updateWindow = null;
-    }
-
-    const manualUpdateWindow = new BrowserWindow({
-        width: 420,
-        height: 220,
-        resizable: false,
-        minimizable: false,
-        maximizable: false,
-        parent: mainWindow,
-        modal: true,
-        title: "Descarga manual de actualización",
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
-        }
-    });
-    manualUpdateWindow.removeMenu();
-    manualUpdateWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(`
-        <html>
-        <head>
-            <title>Descarga manual</title>
-            <style>
-                body { font-family: sans-serif; margin: 20px; }
-                #enlace { margin-top: 20px; }
-                a { color: #1976d2; font-size: 16px; word-break: break-all; }
-                #msg { margin-bottom: 10px; }
-            </style>
-        </head>
-        <body>
-            <h3>Descarga manual de actualización</h3>
-            <div id="msg">No se pudo descargar la actualización automáticamente.<br>
-            Puedes descargarla manualmente desde el siguiente enlace:</div>
-            <div id="enlace">
-                <a href="https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/releases/latest" id="downloadLink" target="_blank">
-                    https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/releases/latest
-                </a>
-            </div>
-            <script>
-                // Abrir el enlace en el navegador externo
-                const { shell } = require('electron');
-                document.getElementById('downloadLink').onclick = (e) => {
-                    e.preventDefault();
-                    shell.openExternal(e.target.href);
-                };
-            </script>
-        </body>
-        </html>
-    `));
-});
-
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
@@ -518,5 +553,23 @@ if (!gotTheLock) {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow();
         }
+    });
+}
+
+// Manejar solicitud de versión
+ipcMain.handle("get-app-version", () => {
+    return app.getVersion();
+});
+
+// Función para verificar si la URL está accesible
+function checkAndLoadURL(window, url, fallback) {
+    http.get(url, (res) => {
+        if (res.statusCode === 200) {
+            window.loadURL(url); // Si la URL es accesible, cargarla
+        } else {
+            window.loadFile(fallback); // Si no, cargar la página 404.html
+        }
+    }).on('error', (err) => {
+        window.loadFile(fallback); // Si ocurre un error, cargar 404.html
     });
 }

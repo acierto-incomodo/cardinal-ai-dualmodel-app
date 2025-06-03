@@ -1,11 +1,11 @@
 Copyright (c) 2025 StormGamesStudios
 
-FREEWARE - Todos los derechos reservados.
+FREEWARE - Todos los derechos reservados
 
-Este software es propiedad de StormGamesStudios.  
+Este software es propiedad de StormGamesStudios.
 Se concede permiso para usar, copiar y modificar este software de forma gratuita, únicamente para fines personales y no comerciales.
 
-**No está permitido:**
+NO ESTÁ PERMITIDO:
 - Distribuir, sublicenciar, vender, alquilar o comercializar este software, ni total ni parcialmente, por ningún medio, incluyendo métodos de pago, donaciones, suscripciones o cualquier otra forma de compensación económica.
 - Utilizar este software como parte de productos o servicios comerciales.
 - Eliminar o modificar este aviso de licencia.

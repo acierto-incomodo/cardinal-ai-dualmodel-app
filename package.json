@@ -1,10 +1,13 @@
 {
   "name": "cardinal-ai-dualmodel-app",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Cardinal AI DualModel App is a desktop application that allows users to interact with the Cardinal AI model, providing a user-friendly interface for generating and managing AI-generated content.",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win",
+    "publish": "electron-builder --win --publish always",
     "build": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
     "install": "npm install",
@@ -22,10 +25,23 @@
   "homepage": "https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app.git"
+    "url": "https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app.git"
   },
   "author": "StormGamesStudios",
-  "license": "MIT",
+  "email": "meliodas.aitor@gmail.com",
+  "description": "Cardinal AI MultiModel App is a desktop application that allows users to interact with multiple AI models, providing a user-friendly interface for generating and managing AI-generated content.",
+  "keywords": [
+    "electron",
+    "desktop",
+    "application",
+    "AI",
+    "CardinalAI",
+    "multi-model"
+  ],
+  "bugs": {
+    "url": "https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/issues"
+  },
+  "license": "FREEWARE",
   "build": {
     "appId": "com.stormgamesstudios.cardinalai",
     "productName": "Cardinal AI MultiModel App",
@@ -59,18 +75,16 @@
           "repo": "cardinal-ai-dualmodel-app",
           "releaseType": "release"
         }
-      ]
-    },
-    "mac": {
-      "target": "dmg"
-    },
-    "linux": {
-      "target": "AppImage"
+      ],
+      "signtoolOptions": {
+        "publisherName": "StormGamesStudios"
+      }
     },
     "nsis": {
-      "oneClick": true,
+      "oneClick": false,
       "perMachine": true,
-      "allowToChangeInstallationDirectory": false
+      "allowToChangeInstallationDirectory": false,
+      "license": "LICENSE.txt"
     }
   }
 }
