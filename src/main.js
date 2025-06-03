@@ -10,6 +10,7 @@ let settingsWindow;
 let shortcutEnabled = false; // Estado inicial del atajo
 let updateWindow = null;
 
+
 // Método para comprobar actualizaciones
 function comprobarActualizaciones() {
     autoUpdater.checkForUpdates()
@@ -53,7 +54,7 @@ function configurarMenu() {
                 {
                     label: "Versión",
                     click: () => {
-                        mainWindow.loadFile('./version.html'); // Cargar versión.html al hacer clic en "Versión"
+                        mainWindow.loadFile('src/version.html'); // Cargar versión.html al hacer clic en "Versión"
                     }
                 },
                 {
@@ -70,7 +71,7 @@ function configurarMenu() {
                 {
                     label: "Error de Actualización",
                     click: () => {
-                        mainWindow.loadURL('https://cardinal-ai-h4rt.vercel.app/update-error'); // Cargar página de error de actualización
+                        mainWindow.loadFile('src/error_actualizacion.html'); // Cargar página de error de actualización
                     }
                 }
             ]
@@ -396,7 +397,7 @@ function createTray() {
             }
         }
     ]);
-    tray.setToolTip('Cardinal AI MultiModel App');
+    tray.setToolTip('CardinalAI MultiModel App');
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {
