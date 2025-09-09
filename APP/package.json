@@ -1,7 +1,7 @@
 {
   "name": "cardinal-ai-dualmodel-app",
-  "version": "1.0.20",
-  "description": "Cardinal AI DualModel App is a desktop application that allows users to interact with the Cardinal AI model, providing a user-friendly interface for generating and managing AI-generated content.",
+  "version": "1.128.1497",
+  "description": "CardinalAI MultiModel App es una aplicación de escritorio que permite a los usuarios interactuar con múltiples modelos de IA de CardinalAI (de StormGamesStudios), proporcionando una interfaz fácil de usar para generar y gestionar contenido generado por inteligencia artificial.",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
@@ -15,11 +15,10 @@
     "directStart": "npm run install && npm start"
   },
   "dependencies": {
-    "electron-store": "^8.1.0",
-    "electron-updater": "^6.6.2"
+    "electron-store": "^8.2.0"
   },
   "devDependencies": {
-    "electron": "^25.0.0",
+    "electron": "^25.9.8",
     "electron-builder": "^26.0.12"
   },
   "homepage": "https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app",
@@ -29,7 +28,6 @@
   },
   "author": "StormGamesStudios",
   "email": "meliodas.aitor@gmail.com",
-  "description": "CardinalAI MultiModel App es una aplicación de escritorio que permite a los usuarios interactuar con múltiples modelos de IA de CardinalAI (de StormGamesStudios), proporcionando una interfaz fácil de usar para generar y gestionar contenido generado por inteligencia artificial.",
   "keywords": [
     "electron",
     "desktop",

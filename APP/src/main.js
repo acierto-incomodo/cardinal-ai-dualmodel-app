@@ -1,5 +1,4 @@
 const { app, BrowserWindow, Menu, Tray, shell, ipcMain, dialog, screen, globalShortcut, nativeImage } = require('electron');
-const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const Store = require('electron-store');
 const store = new Store();
@@ -8,28 +7,6 @@ let mainWindow;
 let tray;
 let settingsWindow;
 let shortcutEnabled = false; // Estado inicial del atajo
-let updateWindow = null;
-
-
-// Método para comprobar actualizaciones
-function comprobarActualizaciones() {
-    autoUpdater.checkForUpdates()
-        .then((info) => {
-            // Si no hay actualizaciones disponibles
-            if (info.updateInfo && !info.updateInfo.version) {
-                dialog.showMessageBox({
-                    type: 'info',
-                    title: 'No hay actualizaciones',
-                    message: 'No hay actualizaciones disponibles en este momento.',
-                    buttons: ['Aceptar']
-                });
-            }
-        })
-        .catch((err) => {
-            // Si ocurre un error al comprobar las actualizaciones
-            dialog.showErrorBox('Error al comprobar actualizaciones', 'Hubo un error al comprobar si hay actualizaciones: ' + err.message);
-        });
-}
 
 // Función para configurar el menú
 function configurarMenu() {
@@ -113,12 +90,6 @@ function configurarMenu() {
                         app.relaunch(); // Reiniciar la aplicación
                         app.quit();
                     }
-                },
-                {
-                    label: "Comprobar Actualizaciones",
-                    click: () => {
-                        comprobarActualizaciones(); // Comprobar actualizaciones
-                    }
                 }
             ]
         }
@@ -200,7 +171,7 @@ function createWindow() {
 
     mainWindow.webContents.on('context-menu', () => {
         const contextMenu = Menu.buildFromTemplate([
-            { label: 'Buscar actualización', click: () => autoUpdater.checkForUpdatesAndNotify() },
+            // { label: 'Buscar actualización', click: () => autoUpdater.checkForUpdatesAndNotify() },
             // { label: 'Ajustes', click: () => openSettingsWindow() },
             { type: 'separator' },
             { label: 'Recargar página', click: () => mainWindow.reload() },
@@ -236,40 +207,6 @@ function createWindow() {
             app.quit();
         }
     });
-
-    // Comprobar actualizaciones al iniciar
-    autoUpdater.checkForUpdatesAndNotify();
-
-    // Eventos del autoUpdater
-    autoUpdater.on("update-available", () => {
-        dialog.showMessageBox({
-            type: "info",
-            title: "Actualización Disponible",
-            message: "Hay una nueva versión disponible. Se descargará en segundo plano. Si no se descarga automáticamente, puedes descargarla manualmente.",
-            buttons: ["Descarga manual", "OK"],
-            defaultId: 1, // Preselecciona el botón "OK"
-            cancelId: 1 // Si el usuario cierra el cuadro, se elige "OK"
-        }).then(result => {
-            if (result.response === 0) { // Si elige "Descarga manual"
-                shell.openExternal("https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app/releases/latest");
-            }
-        });
-    });    
-
-    autoUpdater.on("update-downloaded", () => {
-        dialog.showMessageBox({
-            type: "info",
-            title: "Actualización Lista",
-            message: "La actualización se descargó. ¿Quieres reiniciar para aplicar la actualización?",
-            buttons: ["Reiniciar"]
-        }).then(result => {
-            if (result.response === 0) autoUpdater.quitAndInstall();
-        });
-    });
-
-    autoUpdater.on("error", (error) => {
-        console.error("Error en la actualización:", error);
-    });
 }
 
 function createTray() {
@@ -281,7 +218,6 @@ function createTray() {
 
     // Leer el estado guardado de las preferencias
     const trayOption = store.get('trayOption', true);
-    const startupOption = store.get('startupOption', false);
     const menuBarOption = store.get('showMenuBar', false);
     shortcutEnabled = store.get('shortcutEnabled', false);
 
@@ -314,30 +250,6 @@ function createTray() {
             checked: trayOption,
             click: (menuItem) => {
                 store.set('trayOption', menuItem.checked);
-            }
-        },
-        {
-            label: 'Iniciar con Windows',
-            type: 'checkbox',
-            checked: startupOption,
-            click: (menuItem) => {
-                store.set('startupOption', menuItem.checked);
-                app.setLoginItemSettings({
-                    openAtLogin: !!menuItem.checked,
-                    args: [] // Sin argumentos, inicia normalmente
-                });
-            }
-        },
-        {
-            label: 'Iniciar con Windows (segundo plano)',
-            type: 'checkbox',
-            checked: store.get('startupBackground', false),
-            click: (menuItem) => {
-                store.set('startupBackground', menuItem.checked);
-                app.setLoginItemSettings({
-                    openAtLogin: !!menuItem.checked,
-                    args: menuItem.checked ? ['--background'] : []
-                });
             }
         },
         {
@@ -376,10 +288,6 @@ function createTray() {
         {
             label: 'Otros',
             enabled: false // Solo texto, no clickeable
-        },
-        {
-            label: 'Buscar actualización',
-            click: () => autoUpdater.checkForUpdatesAndNotify()
         },
         {
             label: "Reiniciar Aplicación",
@@ -461,9 +369,9 @@ ipcMain.on('set-menu-bar', (event, showMenuBar) => {
     }
 });
 
-ipcMain.on('buscar-actualizacion', () => {
-    autoUpdater.checkForUpdatesAndNotify();
-});
+// ipcMain.on('buscar-actualizacion', () => {
+//     autoUpdater.checkForUpdatesAndNotify();
+// });
 
 ipcMain.on('save-user-data', (event, userData) => {
   store.set('userData', userData);
@@ -473,7 +381,6 @@ ipcMain.on('save-user-data', (event, userData) => {
 // IPC para guardar preferencias desde settings
 ipcMain.on('set-preferences', (event, prefs) => {
     store.set('trayOption', prefs.trayOption);
-    store.set('startupOption', prefs.startupOption);
     store.set('showMenuBar', prefs.menuBarOption);
     store.set('shortcutEnabled', prefs.shortcutEnabled);
 
@@ -482,11 +389,6 @@ ipcMain.on('set-preferences', (event, prefs) => {
         mainWindow.setAutoHideMenuBar(!prefs.menuBarOption);
         mainWindow.setMenuBarVisibility(prefs.menuBarOption);
     }
-
-    // Aplicar inicio con Windows
-    app.setLoginItemSettings({
-        openAtLogin: !!prefs.startupOption
-    });
 
     // Aplicar acceso directo Alt+Space
     if (prefs.shortcutEnabled) {
@@ -513,9 +415,8 @@ ipcMain.handle('get-preferences', () => {
     // 'shortcutEnabled' debe reflejar el estado actual del atajo
     return {
         trayOption: store.get('trayOption', true),
-        startupOption: store.get('startupOption', false),
         menuBarOption: store.get('showMenuBar', false),
-        shortcutEnabled: store.get('shortcutEnabled', false) // Este valor se actualiza en createTray y set-preferences
+        shortcutEnabled: store.get('shortcutEnabled', false)
     };
 });
 
@@ -535,7 +436,6 @@ if (!gotTheLock) {
     app.whenReady().then(() => {
         createWindow();
         createTray();
-        autoUpdater.checkForUpdatesAndNotify();
 
         app.on('will-quit', () => {
             globalShortcut.unregisterAll();
