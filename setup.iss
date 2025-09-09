@@ -1,6 +1,6 @@
 [Setup]
 AppName=CardinalAI MultiModel APP Installer
-AppVersion=1.2.5
+AppVersion=1.2.6
 DefaultDirName={userappdata}\StormGamesStudios\StormPack\CardinalAI MultiModel APP
 DefaultGroupName=StormGamesStudios
 OutputDir=C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\Build
@@ -11,7 +11,7 @@ AppCopyright=Copyright © 2025 StormGamesStudios. All rights reserved.
 VersionInfoCompany=StormGamesStudios
 AppPublisher=StormGamesStudios
 SetupIconFile=icon.ico
-VersionInfoVersion=1.2.0.0
+VersionInfoVersion=1.2.6.0
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 LicenseFile=C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\LICENSE.txt
@@ -32,6 +32,8 @@ Source: "C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-la
 Source: "C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\images\extra2.png"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\images\file-icon.png"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\images\file-icon.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\images\icon.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\images\icon.png"; DestDir: "{app}"; Flags: ignoreversion
 
 ; Agregar el instalador de .NET Core 3.1.32
 Source: "C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\windowsdesktop-runtime-3.1.32-win-x64.exe"; DestDir: "{tmp}"; Flags: ignoreversion
