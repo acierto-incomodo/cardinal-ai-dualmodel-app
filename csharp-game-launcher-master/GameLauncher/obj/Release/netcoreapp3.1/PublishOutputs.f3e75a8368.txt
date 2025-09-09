@@ -1,0 +1,6 @@
+C:\Users\mapsp\Documents\GitHub\StormSearch\Export\StormSearch Installer.exe
+C:\Users\mapsp\Documents\GitHub\StormSearch\Export\StormSearch Installer.dll
+C:\Users\mapsp\Documents\GitHub\StormSearch\Export\StormSearch Installer.deps.json
+C:\Users\mapsp\Documents\GitHub\StormSearch\Export\StormSearch Installer.runtimeconfig.json
+C:\Users\mapsp\Documents\GitHub\StormSearch\Export\StormSearch Installer.dll.config
+C:\Users\mapsp\Documents\GitHub\StormSearch\Export\StormSearch Installer.pdb

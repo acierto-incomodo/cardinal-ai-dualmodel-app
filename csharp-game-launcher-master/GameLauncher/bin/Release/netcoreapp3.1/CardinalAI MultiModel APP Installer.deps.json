@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "CardinalAI MultiModel APP Installer/1.0.2": {
+        "runtime": {
+          "CardinalAI MultiModel APP Installer.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CardinalAI MultiModel APP Installer/1.0.2": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

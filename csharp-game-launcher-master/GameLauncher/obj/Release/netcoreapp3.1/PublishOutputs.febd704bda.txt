@@ -1,0 +1,6 @@
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\Publish\CardinalAI MultiModel APP Installer.exe
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\Publish\CardinalAI MultiModel APP Installer.dll
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\Publish\CardinalAI MultiModel APP Installer.deps.json
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\Publish\CardinalAI MultiModel APP Installer.runtimeconfig.json
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\Publish\CardinalAI MultiModel APP Installer.dll.config
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\Publish\CardinalAI MultiModel APP Installer.pdb

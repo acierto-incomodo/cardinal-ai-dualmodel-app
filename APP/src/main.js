@@ -298,14 +298,14 @@ function createTray() {
         },
         { type: 'separator' },
         {
-            label: 'Cerrar app',
+            label: 'Cerrar APP',
             click: () => {
                 app.isQuiting = true;
                 app.quit();
             }
         }
     ]);
-    tray.setToolTip('CardinalAI MultiModel App');
+    tray.setToolTip('CardinalAI MultiModel APP');
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {

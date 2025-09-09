@@ -1,0 +1,42 @@
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\MainWindow.g.cs
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\App.g.cs
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\StormSearch Installer_MarkupCompile.cache
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\StormSearch Installer_MarkupCompile.lref
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\StormSearch Installer.exe
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\StormSearch Installer.dll.config
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\StormSearch Installer.deps.json
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\StormSearch Installer.runtimeconfig.json
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\StormSearch Installer.runtimeconfig.dev.json
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\StormSearch Installer.dll
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\StormSearch Installer.pdb
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\MainWindow.baml
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\StormSearch Installer.g.resources
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.AssemblyInfoInputs.cache
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.AssemblyInfo.cs
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.csproj.CoreCompileInputs.cache
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.sourcelink.json
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\StormSearch Installer.dll
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\StormSearch Installer.pdb
+C:\Users\mapsp\Documents\GitHub\StormSearch\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.genruntimeconfig.cache
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\MainWindow.g.cs
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\App.g.cs
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\MainWindow.baml
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.AssemblyInfoInputs.cache
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.AssemblyInfo.cs
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.csproj.CoreCompileInputs.cache
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.sourcelink.json
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\GameLauncher.genruntimeconfig.cache
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.exe
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.dll.config
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.deps.json
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.runtimeconfig.json
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.runtimeconfig.dev.json
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.dll
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\bin\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.pdb
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer_MarkupCompile.cache
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer_MarkupCompile.lref
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.g.resources
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.dll
+C:\Users\USER\Documents\GitHub\cardinal-ai-dualmodel-app\csharp-game-launcher-master\GameLauncher\obj\Release\netcoreapp3.1\CardinalAI MultiModel APP Installer.pdb
