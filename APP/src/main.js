@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, Tray, shell, ipcMain, dialog, screen, globalSh
 const path = require('path');
 const Store = require('electron-store');
 const store = new Store();
+const fs = require('fs');
 
 let mainWindow;
 let tray;
@@ -29,9 +30,38 @@ function configurarMenu() {
                     }
                 },
                 {
-                    label: "Versión",
+                    label: "Acerca de CardinalAI",
                     click: () => {
-                        mainWindow.loadFile('src/version.html'); // Cargar versión.html al hacer clic en "Versión"
+                        const aboutWindow = new BrowserWindow({
+                            width: 400,
+                            height: 505,
+                            resizable: false,
+                            title: 'Acerca de CardinalAI',
+                            icon: path.join(__dirname, '../build/icon.ico'),
+                            webPreferences: {
+                                nodeIntegration: true
+                            }
+                        });
+                        aboutWindow.setMenu(null); // Deshabilita el menú en la ventana "Acerca de CardinalAI"
+                        aboutWindow.loadURL('data:text/html;charset=utf-8,' +
+                            encodeURIComponent(`
+                                <h1>CardinalAI</h1>
+                                <p>CardinalCORE: v1.0.1</p>
+                                <p>Cardinal System: v2.0.3</p>
+                                <p>Cardinal SubSystem: v1.3.5</p>
+                                <p>CardinalAI: v2.5.0</p>
+                                <br>
+                                <h3>CardinalAI Models:</h3>
+                                <ul>
+                                    <li>Cardinal System AI v1.0</li>
+                                    <li>Cardinal System AI v1.5</li>
+                                    <li>CardinalAI v1.5 Flash</li>
+                                    <li>CardinalAI v2.0 Flash</li>
+                                    <li>CardinalAI v2.5 Flash Beta</li>
+                                </ul>
+                                <br>
+                                <h3>Desarrollado por StormGamesStudios</h3>
+                            `));
                     }
                 },
                 {
@@ -75,6 +105,13 @@ function configurarMenu() {
                     accelerator: "Ctrl+F5",
                     click: () => {
                         mainWindow.webContents.reloadIgnoringCache(); // Recargar sin caché
+                    }
+                },
+                {
+                    label: "Desactivar o activar inicio automatico con Windows",
+                    click: () => {
+                        // Abre la configuración de aplicaciones de inicio de Windows 10/11
+                        shell.openExternal('ms-settings:startupapps');
                     }
                 },
                 {
@@ -457,9 +494,9 @@ if (!gotTheLock) {
     });
 }
 
-// Manejar solicitud de versión
-ipcMain.handle("get-app-version", () => {
-    return app.getVersion();
+// Enviar la versión de la aplicación al proceso de renderizado
+ipcMain.handle('get-app-version', () => {
+    return packageJson.version;
 });
 
 // Función para verificar si la URL está accesible

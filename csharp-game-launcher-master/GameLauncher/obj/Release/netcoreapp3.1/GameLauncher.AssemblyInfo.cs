@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © StormGamesStudios")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("CardinalAI MultiModel APP Installer")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.2.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.2+4f10368e6a98a47b7ecca1c7c9c98165f40587d6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.2+cbd9777baf729fc79e373fe9a856f5d8e00e19cb")]
 [assembly: System.Reflection.AssemblyProductAttribute("CardinalAI MultiModel APP Installer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CardinalAI MultiModel APP Installer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.2.0")]

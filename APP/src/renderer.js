@@ -30,3 +30,13 @@ function loadWebPage() {
 }
 
 window.onload = loadWebPage;
+
+// Mostrar la versión actual en la página de versión
+window.electronAPI.getAppVersion = () => window.electronAPI.getAppVersionPromise?.() || ipcRenderer.invoke('get-app-version');
+
+window.electronAPI.getAppVersion().then(version => {
+    const versionSpanDos = document.getElementById('app-version-dos');
+    const versionSpan = document.getElementById('app-version');
+    if (versionSpanDos) versionSpanDos.textContent = version;
+    if (versionSpan) versionSpan.textContent = version;
+});

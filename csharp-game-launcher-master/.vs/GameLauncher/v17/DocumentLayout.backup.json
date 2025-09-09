@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\USER\\Documents\\GitHub\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7FA3FB14-7943-4E38-820E-77E2BA28283E}|GameLauncher\\GameLauncher.csproj|c:\\users\\user\\documents\\github\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\gamelauncher\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{7FA3FB14-7943-4E38-820E-77E2BA28283E}|GameLauncher\\GameLauncher.csproj|solutionrelative:gamelauncher\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7FA3FB14-7943-4E38-820E-77E2BA28283E}|GameLauncher\\GameLauncher.csproj|c:\\users\\user\\documents\\github\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\gamelauncher\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7FA3FB14-7943-4E38-820E-77E2BA28283E}|GameLauncher\\GameLauncher.csproj|solutionrelative:gamelauncher\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7FA3FB14-7943-4E38-820E-77E2BA28283E}|GameLauncher\\GameLauncher.csproj|c:\\users\\user\\documents\\github\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\gamelauncher\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{7FA3FB14-7943-4E38-820E-77E2BA28283E}|GameLauncher\\GameLauncher.csproj|solutionrelative:gamelauncher\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7FA3FB14-7943-4E38-820E-77E2BA28283E}|GameLauncher\\GameLauncher.csproj|c:\\users\\user\\documents\\github\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\gamelauncher\\gamelauncher.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
@@ -51,7 +51,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -63,8 +63,7 @@
               "RelativeToolTip": "GameLauncher\\GameLauncher.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-03-14T15:16:07.294Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -77,25 +76,24 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-03-13T19:53:13.109Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\GameLauncher\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "GameLauncher\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\GameLauncher\\MainWindow.xaml.cs",
               "RelativeToolTip": "GameLauncher\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAC4AAAAAAAAAAAAAAE8AAABIAAAAAAAAAA==",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAAwE8AAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-13T19:44:19.905Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\GameLauncher\\MainWindow.xaml",
               "RelativeDocumentMoniker": "GameLauncher\\MainWindow.xaml",
@@ -128,8 +126,7 @@
               "RelativeToolTip": "GameLauncher\\AssemblyInfo.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-13T19:53:18.855Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-13T19:53:18.855Z"
             },
             {
               "$type": "Document",
@@ -140,8 +137,7 @@
               "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\cardinal-ai-dualmodel-app\\csharp-game-launcher-master\\GameLauncher\\App.xaml",
               "RelativeToolTip": "GameLauncher\\App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-13T19:53:08.709Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-13T19:53:08.709Z"
             },
             {
               "$type": "Document",
@@ -153,8 +149,7 @@
               "RelativeToolTip": "GameLauncher\\App.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-14T15:15:55.684Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-14T15:15:55.684Z"
             },
             {
               "$type": "Document",
@@ -166,8 +161,7 @@
               "RelativeToolTip": "..\\..\\..\\..\\..\\melio\\Desktop\\Lethal Company - Launcher\\csharp-game-launcher-master\\GameLauncher\\Properties\\PublishProfiles\\FolderProfile.pubxml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2025-03-14T15:27:42.231Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-14T15:27:42.231Z"
             },
             {
               "$type": "Document",
@@ -179,8 +173,7 @@
               "RelativeToolTip": "GameLauncher\\App.config",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2025-03-14T15:36:10.564Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-14T15:36:10.564Z"
             },
             {
               "$type": "Document",
@@ -188,8 +181,8 @@
               "Title": "XamlReader.cs",
               "DocumentMoniker": "C:\\Users\\USER\\AppData\\Local\\Temp\\.vsdbgsrc\\547857b5378516d64b440030ad27fcafc9404b741820b5e090787cb628117a16\\XamlReader.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\547857b5378516d64b440030ad27fcafc9404b741820b5e090787cb628117a16\\XamlReader.cs",
-              "ToolTip": "C:\\Users\\USER\\AppData\\Local\\Temp\\.vsdbgsrc\\547857b5378516d64b440030ad27fcafc9404b741820b5e090787cb628117a16\\XamlReader.cs [Solo lectura]",
-              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\547857b5378516d64b440030ad27fcafc9404b741820b5e090787cb628117a16\\XamlReader.cs [Solo lectura]",
+              "ToolTip": "C:\\Users\\USER\\AppData\\Local\\Temp\\.vsdbgsrc\\547857b5378516d64b440030ad27fcafc9404b741820b5e090787cb628117a16\\XamlReader.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\547857b5378516d64b440030ad27fcafc9404b741820b5e090787cb628117a16\\XamlReader.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-15T13:44:19.875Z"
             }
