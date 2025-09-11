@@ -13,12 +13,12 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StormGamesStudios")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © StormGamesStudios")]
-[assembly: System.Reflection.AssemblyDescriptionAttribute("StormSearch Installer")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.1.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.1+1690bc0ad0b1c73685572a914138074e18d23c97")]
-[assembly: System.Reflection.AssemblyProductAttribute("StormSearch Installer")]
-[assembly: System.Reflection.AssemblyTitleAttribute("StormSearch Installer")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.1.0")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("CardinalAI MultiModel APP Installer")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.2.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.2+2ecfe281db040172d6f2e1989e1c4eee2a4a5541")]
+[assembly: System.Reflection.AssemblyProductAttribute("CardinalAI MultiModel APP Installer")]
+[assembly: System.Reflection.AssemblyTitleAttribute("CardinalAI MultiModel APP Installer")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.2.0")]
 
 // Generado por la clase WriteCodeFragment de MSBuild.
 
