@@ -1,0 +1,43 @@
+CardinalAI MultiModel App
+Copyright (c) StormGamesStudios. Todos los derechos reservados.
+
+LICENCIA DE USO GRATUITO (FREEWARE)
+
+Este software, "CardinalAI MultiModel App", es un programa gratuito desarrollado por StormGamesStudios.  
+Su uso está permitido de forma libre para fines personales, educativos o empresariales sin coste alguno,  
+siempre y cuando se respeten las siguientes condiciones:
+
+1. PROPIEDAD INTELECTUAL  
+   El software y todos sus recursos asociados (código fuente, iconos, nombre, interfaz, logotipo, etc.)
+   son propiedad de StormGamesStudios. No se concede ningún derecho de propiedad sobre el software, 
+   solo una licencia de uso gratuita.
+
+2. DISTRIBUCIÓN  
+   Está permitido redistribuir el software, siempre que:
+   - No se modifique el código ni el nombre original del programa.  
+   - No se cobre ningún tipo de tarifa o coste adicional por su obtención.  
+   - Se mantenga este archivo de licencia sin modificaciones.
+
+3. MODIFICACIONES  
+   No se permite modificar, descompilar ni realizar ingeniería inversa sobre el programa, salvo
+   autorización expresa del autor.
+
+4. GARANTÍA  
+   Este software se proporciona “TAL CUAL”, sin garantía de ningún tipo.  
+   StormGamesStudios no se hace responsable de ningún daño directo o indirecto derivado del uso
+   o mal uso del programa.
+
+5. ACTUALIZACIONES  
+   StormGamesStudios se reserva el derecho de actualizar, modificar o descontinuar el software
+   sin previo aviso.
+
+6. CONTACTO  
+   Para consultas o soporte:  
+   📧 meliodas.aitor@gmail.com  
+   🌐 https://github.com/acierto-incomodo
+
+Al utilizar este programa, aceptas los términos de esta licencia.
+
+-------------------------------------------------
+StormGamesStudios © Todos los derechos reservados
+Versión del software: 1.128.1450

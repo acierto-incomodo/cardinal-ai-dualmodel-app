@@ -12,7 +12,11 @@
     "postinstall": "electron-builder install-app-deps",
     "install": "npm install",
     "directInstallBuild": "npm run install && npm run build",
-    "directStart": "npm run install && npm start"
+    "directStart": "npm run install && npm start",
+    "dist:linux": "electron-builder --linux",
+    "build:linux": "electron-builder --linux --publish never",
+    "dist:snap": "electron-builder --linux snap",
+    "build:snap": "snapcraft pack"
   },
   "dependencies": {
     "electron-store": "^8.2.0"
@@ -26,8 +30,10 @@
     "type": "git",
     "url": "https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app.git"
   },
-  "author": "StormGamesStudios",
-  "email": "meliodas.aitor@gmail.com",
+  "author": {
+    "name": "StormGamesStudios",
+    "email": "meliodas.aitor@gmail.com"
+  },
   "keywords": [
     "electron",
     "desktop",
@@ -42,15 +48,15 @@
   "license": "FREEWARE",
   "build": {
     "appId": "com.stormgamesstudios.cardinalai",
-    "productName": "cardinal-ai-multimodel-app",
+    "productName": "Cardinal AI MultiModel",
     "extraResources": [
       {
-        "from": "build/icon.ico",
-        "to": "build/icon.ico",
+        "from": "icons/icon.ico",
+        "to": "icons/icon.ico",
         "filter": "**/*"
       },
       {
-        "from": "build/icon.ico",
+        "from": "icons/icon.ico",
         "to": "icon.ico",
         "filter": "**/*"
       },
@@ -64,16 +70,43 @@
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
+          "arch": ["x64", "ia32"]
         }
       ],
-      "icon": "build/icon.ico",
+      "icon": "icons/icon.ico",
       "signtoolOptions": {
         "publisherName": "StormGamesStudios"
       }
+    },
+    "linux": {
+      "target": ["deb", "rpm", "AppImage", "snap"],
+      "icon": "icons",
+      "category": "Utility",
+      "maintainer": "StormGamesStudios <meliodas.aitor@gmail.com>",
+      "vendor": "StormGamesStudios",
+      "desktop": {
+        "entry": {
+          "Type": "Application",
+          "Name": "Cardinal AI MultiModel",
+          "Comment": "CardinalAI MultiModel Application",
+          "Categories": "Utility;Development;",
+          "Terminal": "false"
+        }
+      }
+    },
+    "snap": {
+      "confinement": "strict",
+      "grade": "stable",
+      "plugs": [
+        "network",
+        "home",
+        "x11",
+        "desktop",
+        "wayland",
+        "opengl",
+        "audio-playback"
+      ],
+      "base": "core22"
     },
     "nsis": {
       "oneClick": false,
