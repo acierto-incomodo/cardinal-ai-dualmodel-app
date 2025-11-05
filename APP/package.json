@@ -70,7 +70,10 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ],
       "icon": "icons/icon.ico",
@@ -79,20 +82,15 @@
       }
     },
     "linux": {
-      "target": ["deb", "rpm", "AppImage", "snap"],
+      "target": [
+        "deb"
+      ],
       "icon": "icons",
       "category": "Utility",
       "maintainer": "StormGamesStudios <meliodas.aitor@gmail.com>",
       "vendor": "StormGamesStudios",
-      "desktop": {
-        "entry": {
-          "Type": "Application",
-          "Name": "Cardinal AI MultiModel",
-          "Comment": "CardinalAI MultiModel Application",
-          "Categories": "Utility;Development;",
-          "Terminal": "false"
-        }
-      }
+      "synopsis": "Aplicación de IA multi-modelo",
+      "description": "CardinalAI MultiModel App permite interactuar con múltiples modelos de IA desarrollados por StormGamesStudios desde una interfaz unificada y moderna."
     },
     "snap": {
       "confinement": "strict",
