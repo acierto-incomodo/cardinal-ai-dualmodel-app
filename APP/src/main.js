@@ -37,7 +37,7 @@ function configurarMenu() {
                             height: 505,
                             resizable: false,
                             title: 'Acerca de CardinalAI',
-                            icon: path.join(__dirname, '../build/icon.ico'),
+                            icon: path.join(__dirname, '../icons/icon.ico'),
                             webPreferences: {
                                 nodeIntegration: true
                             }
@@ -143,7 +143,7 @@ function createWindow() {
 
     const iconPath = app.isPackaged
         ? path.join(process.resourcesPath, 'icon.ico')
-        : path.join(__dirname, '../build/icon.ico');
+        : path.join(__dirname, '../icons/icon.ico');
     const icon = nativeImage.createFromPath(iconPath);
     const smallIcon = icon.isEmpty() ? undefined : icon.resize({ width: 16, height: 16 });
 
@@ -249,7 +249,7 @@ function createWindow() {
 function createTray() {
     const iconPath = app.isPackaged
         ? path.join(process.resourcesPath, 'icon.ico')
-        : path.join(__dirname, '../build/icon.ico');
+        : path.join(__dirname, '../icons/icon.ico');
     const icon = nativeImage.createFromPath(iconPath);
     const smallIcon = icon.isEmpty() ? undefined : icon.resize({ width: 16, height: 16 });
 
