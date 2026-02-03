@@ -1,0 +1,21 @@
+LISTA DE ARCHIVOS A PUBLICAR EN GITHUB RELEASES
+===============================================
+
+Para que la actualización automática funcione, es OBLIGATORIO subir estos archivos generados en la carpeta 'dist' a tu Release de GitHub:
+
+PARA WINDOWS:
+1. latest.yml
+   (IMPORTANTE: Este archivo le dice a la app qué versión es la nueva. Sin él, no hay actualización).
+   
+2. MultiAI Setup 1.1.7.exe
+   (El instalador. El nombre cambiará según la versión).
+
+3. MultiAI Setup 1.1.7.exe.blockmap
+   (Opcional pero recomendado: permite actualizaciones más rápidas descargando solo lo modificado).
+
+PARA LINUX (AppImage):
+1. latest-linux.yml
+   (El archivo de control para Linux).
+
+2. MultiAI-1.1.7-x86_64.AppImage
+   (El ejecutable AppImage. El auto-updater en Linux funciona principalmente con este formato).

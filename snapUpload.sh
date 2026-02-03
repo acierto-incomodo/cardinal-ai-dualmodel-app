@@ -1,0 +1,1 @@
+snapcraft upload --release=stable dist/*.snap

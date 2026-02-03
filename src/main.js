@@ -1,11 +1,10 @@
-const { app, BrowserWindow, Menu, Tray, shell, ipcMain, dialog, screen, globalShortcut, nativeImage } = require('electron');
+const { app, BrowserWindow, Menu, shell, ipcMain, dialog, screen, globalShortcut, nativeImage } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
-const Store = require('electron-store');
-const store = new Store();
 const fs = require('fs');
+const packageJson = require('../package.json');
 
 let mainWindow;
-let tray;
 let settingsWindow;
 let shortcutEnabled = false; // Estado inicial del atajo
 
@@ -17,7 +16,7 @@ function configurarMenu() {
         {
             label: "Inicio",
             click: () => {
-                mainWindow.loadURL('https://cardinal-ai-h4rt.vercel.app');
+                mainWindow.loadURL('https://cardinal-ai-web.vercel.app');
             }
         },
         {
@@ -107,13 +106,13 @@ function configurarMenu() {
                         mainWindow.webContents.reloadIgnoringCache(); // Recargar sin caché
                     }
                 },
-                {
-                    label: "Desactivar o activar inicio automatico con Windows",
-                    click: () => {
-                        // Abre la configuración de aplicaciones de inicio de Windows 10/11
-                        shell.openExternal('ms-settings:startupapps');
-                    }
-                },
+                // {
+                //     label: "Desactivar o activar inicio automatico con Windows",
+                //     click: () => {
+                //         // Abre la configuración de aplicaciones de inicio de Windows 10/11
+                //         shell.openExternal('ms-settings:startupapps');
+                //     }
+                // },
                 {
                     label: "Cerrar Aplicación",
                     accelerator: "Alt+F4",
@@ -137,7 +136,7 @@ function configurarMenu() {
 }
 
 function createWindow() {
-    const showMenuBar = store.get('showMenuBar', false);
+    const showMenuBar = false;
     const primaryDisplay = screen.getPrimaryDisplay();
     const { width, height } = primaryDisplay.workAreaSize;
 
@@ -169,7 +168,7 @@ function createWindow() {
         mainWindow.maximize();
         mainWindow.show();
     }
-    mainWindow.loadURL('https://cardinal-ai-h4rt.vercel.app');
+    mainWindow.loadURL('https://cardinal-ai-web.vercel.app');
 
     mainWindow.webContents.on('did-finish-load', () => {
         mainWindow.webContents.insertCSS(`
@@ -210,7 +209,7 @@ function createWindow() {
         const contextMenu = Menu.buildFromTemplate([
             // { label: 'Buscar actualización', click: () => autoUpdater.checkForUpdatesAndNotify() },
             // { label: 'Ajustes', click: () => openSettingsWindow() },
-            { type: 'separator' },
+            // { type: 'separator' },
             { label: 'Recargar página', click: () => mainWindow.reload() },
             { label: 'Forzar recarga', click: () => mainWindow.webContents.reloadIgnoringCache() },
             { type: 'separator' },
@@ -234,143 +233,9 @@ function createWindow() {
     });
 
     mainWindow.on('close', (event) => {
-        // Usar la preferencia 'trayOption'
-        const trayOption = store.get('trayOption', true); // Por defecto, mantener en bandeja
-        if (!app.isQuiting && trayOption) {
-            event.preventDefault();
-            mainWindow.hide();
-        } else if (!app.isQuiting && !trayOption) {
-            // Si trayOption es false, permitir que la aplicación se cierre normalmente
-            app.quit();
-        }
+        // Cierre normal de la aplicación
+        app.quit();
     });
-}
-
-function createTray() {
-    const iconPath = app.isPackaged
-        ? path.join(process.resourcesPath, 'icon.ico')
-        : path.join(__dirname, '../icons/icon.ico');
-    const icon = nativeImage.createFromPath(iconPath);
-    const smallIcon = icon.isEmpty() ? undefined : icon.resize({ width: 16, height: 16 });
-
-    // Leer el estado guardado de las preferencias
-    const trayOption = store.get('trayOption', true);
-    const menuBarOption = store.get('showMenuBar', false);
-    shortcutEnabled = store.get('shortcutEnabled', false);
-
-    tray = new Tray(icon);
-
-    const contextMenu = Menu.buildFromTemplate([
-        {
-            label: 'CardinalAI',
-            icon: smallIcon,
-            enabled: false // Solo texto, no clickeable
-        },
-        { type: 'separator' },
-        {
-            label: 'Ajustes',
-            enabled: false // Solo texto, no clickeable
-        },
-        {
-            label: 'Mostrar/Ocultar',
-            click: () => {
-                if (mainWindow.isVisible()) {
-                    mainWindow.hide();
-                } else {
-                    mainWindow.show();
-                }
-            }
-        },
-        {
-            label: 'Mantener en la bandeja al cerrar',
-            type: 'checkbox',
-            checked: trayOption,
-            click: (menuItem) => {
-                store.set('trayOption', menuItem.checked);
-            }
-        },
-        {
-            label: 'Mostrar barra de menú',
-            type: 'checkbox',
-            checked: menuBarOption,
-            click: (menuItem) => {
-                store.set('showMenuBar', menuItem.checked);
-                if (mainWindow) {
-                    mainWindow.setAutoHideMenuBar(!menuItem.checked);
-                    mainWindow.setMenuBarVisibility(menuItem.checked);
-                }
-            }
-        },
-        {
-            label: 'Activar atajo de teclado (Alt+Space)',
-            type: 'checkbox',
-            checked: shortcutEnabled,
-            click: (menuItem) => {
-                shortcutEnabled = menuItem.checked;
-                store.set('shortcutEnabled', shortcutEnabled);
-                if (shortcutEnabled) {
-                    globalShortcut.register('Alt+Space', () => {
-                        if (mainWindow.isVisible()) {
-                            mainWindow.hide();
-                        } else {
-                            mainWindow.show();
-                        }
-                    });
-                } else {
-                    globalShortcut.unregister('Alt+Space');
-                }
-            }
-        },
-        { type: 'separator' },
-        {
-            label: 'Otros',
-            enabled: false // Solo texto, no clickeable
-        },
-        {
-            label: "Reiniciar Aplicación",
-            click: () => {
-                app.relaunch(); // Reiniciar la aplicación
-                app.quit();
-            }
-        },
-        { type: 'separator' },
-        {
-            label: 'Cerrar APP',
-            click: () => {
-                app.isQuiting = true;
-                app.quit();
-            }
-        }
-    ]);
-    tray.setToolTip('CardinalAI MultiModel APP');
-    tray.setContextMenu(contextMenu);
-
-    tray.on('click', () => {
-        if (mainWindow.isVisible()) {
-            mainWindow.hide();
-        } else {
-            mainWindow.show();
-        }
-    });
-
-    tray.on('double-click', () => {
-        if (mainWindow.isVisible()) {
-            mainWindow.hide();
-        } else {
-            mainWindow.show();
-        }
-    });
-
-    // Registrar el acceso directo si estaba activado al inicio
-    if (shortcutEnabled) {
-        globalShortcut.register('Alt+Space', () => {
-            if (mainWindow.isVisible()) {
-                mainWindow.hide();
-            } else {
-                mainWindow.show();
-            }
-        });
-    }
 }
 
 function openSettingsWindow() {
@@ -399,27 +264,22 @@ function openSettingsWindow() {
 
 // IPC para cambiar la visibilidad de la barra de menú
 ipcMain.on('set-menu-bar', (event, showMenuBar) => {
-    store.set('showMenuBar', showMenuBar);
     if (mainWindow) {
         mainWindow.setAutoHideMenuBar(!showMenuBar);
         mainWindow.setMenuBarVisibility(showMenuBar);
     }
 });
 
-// ipcMain.on('buscar-actualizacion', () => {
-//     autoUpdater.checkForUpdatesAndNotify();
-// });
+ipcMain.on('buscar-actualizacion', () => {
+    autoUpdater.checkForUpdatesAndNotify();
+});
 
 ipcMain.on('save-user-data', (event, userData) => {
-  store.set('userData', userData);
   console.log('User data saved:', userData);
 });
 
 // IPC para guardar preferencias desde settings
 ipcMain.on('set-preferences', (event, prefs) => {
-    store.set('trayOption', prefs.trayOption);
-    store.set('showMenuBar', prefs.menuBarOption);
-    store.set('shortcutEnabled', prefs.shortcutEnabled);
 
     // Aplicar barra de menú
     if (mainWindow) {
@@ -451,9 +311,8 @@ ipcMain.handle('get-preferences', () => {
     // Por defecto, 'trayOption' es true (mantener en bandeja)
     // 'shortcutEnabled' debe reflejar el estado actual del atajo
     return {
-        trayOption: store.get('trayOption', true),
-        menuBarOption: store.get('showMenuBar', false),
-        shortcutEnabled: store.get('shortcutEnabled', false)
+        menuBarOption: false,
+        shortcutEnabled: false
     };
 });
 
@@ -472,7 +331,6 @@ if (!gotTheLock) {
 
     app.whenReady().then(() => {
         createWindow();
-        createTray();
 
         app.on('will-quit', () => {
             globalShortcut.unregisterAll();
@@ -480,10 +338,8 @@ if (!gotTheLock) {
     });
 
     app.on('window-all-closed', () => {
-        // La lógica para cerrar completamente o mantener en bandeja se maneja en mainWindow.on('close')
         if (process.platform !== 'darwin') {
-             // Si trayOption es false, app.quit() ya se llama en mainWindow.on('close')
-             // Si trayOption es true, la app no se cierra, solo se oculta
+            app.quit();
         }
     });
 
@@ -511,3 +367,29 @@ function checkAndLoadURL(window, url, fallback) {
         window.loadFile(fallback); // Si ocurre un error, cargar 404.html
     });
 }
+
+// --- Configuración de AutoUpdater ---
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
+
+autoUpdater.on('update-available', () => {
+    dialog.showMessageBox(mainWindow, {
+        type: 'info',
+        title: 'Actualización disponible',
+        message: 'Hay una nueva versión disponible. ¿Quieres descargarla ahora?',
+        buttons: ['Sí', 'No']
+    }).then((result) => {
+        if (result.response === 0) {
+            autoUpdater.downloadUpdate();
+        }
+    });
+});
+
+autoUpdater.on('update-downloaded', () => {
+    dialog.showMessageBox(mainWindow, {
+        type: 'info',
+        title: 'Actualización lista',
+        message: 'La actualización se ha descargado. Se instalará automáticamente al cerrar la aplicación.',
+        buttons: ['Entendido']
+    });
+});

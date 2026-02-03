@@ -1,0 +1,4 @@
+1) winget install wingetcreate (en powershell)
+2) Subir .exe o .msi a github
+3) wingetcreate new https://github.com/acierto-incomodo/MultiAI/releases/download/v1.1.6/MultiAI.Setup.1.1.6.exe
+4) (actualizar) wingetcreate update StormGamesStudios.MultiAI --version 1.1.6 --urls https://github.com/acierto-incomodo/MultiAI/releases/download/v1.1.6/MultiAI.Setup.1.1.6.exe

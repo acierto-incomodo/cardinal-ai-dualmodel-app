@@ -1,0 +1,15 @@
+Copyright (c) 2025 StormGamesStudios
+
+FREEWARE - All rights reserved
+
+This software is the property of StormGamesStudios.
+Permission is granted to use, copy, and modify this software free of charge, for personal and non-commercial purposes only.
+
+NOT PERMITTED:
+- To distribute, sublicense, sell, rent, or commercialize this software, in whole or in part, by any means, including payment methods, donations, subscriptions, or any other form of economic compensation.
+- To use this software as part of commercial products or services.
+- To remove or modify this license notice.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+
+For any use outside these terms, contact StormGamesStudios.

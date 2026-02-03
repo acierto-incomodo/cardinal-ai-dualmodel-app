@@ -1,0 +1,86 @@
+===============================
+   Instalación / Desinstalación
+          MultiAI - Linux
+===============================
+
+
+====================================
+=            FORMATO .deb          =
+====================================
+
+INSTALAR:
+sudo dpkg -i multiAI.deb
+sudo apt --fix-broken install     # (si hace falta)
+
+DESINSTALAR:
+sudo apt remove multiai
+# o si quieres borrar también la configuración:
+sudo apt purge multiai
+
+
+
+====================================
+=           FORMATO Snap           =
+====================================
+
+INSTALAR:
+sudo snap install --dangerous multiAI.snap
+
+EJECUTAR:
+multi-ai
+
+DESINSTALAR:
+sudo snap remove multi-ai
+
+
+
+====================================
+=         FORMATO AppImage         =
+====================================
+
+INSTALAR (realmente no se instala):
+chmod +x MultiAI.AppImage
+./MultiAI.AppImage
+
+AÑADIR AL MENÚ (opcional):
+# Requiere AppImageLauncher en algunos distros
+
+DESINSTALAR:
+# Solo borrar el archivo .AppImage
+rm MultiAI.AppImage
+
+
+
+====================================
+=          FORMATO Flatpak         =
+====================================
+
+INSTALAR:
+flatpak install --user multiAI.flatpak
+
+EJECUTAR:
+flatpak run com.stormgamesstudios.multiai
+
+DESINSTALAR:
+flatpak uninstall com.stormgamesstudios.multiai
+
+
+
+====================================
+=   UBICACIÓN DE ARCHIVOS (INFO)   =
+====================================
+
+Snap:
+  /home/usuario/snap/multi-ai/
+  /var/lib/snapd/snaps/
+
+Flatpak:
+  ~/.var/app/com.stormgamesstudios.multiai/
+
+AppImage:
+  No usa instalación, queda donde tú lo pongas
+
+.deb:
+  /usr/share/multiai
+  /opt/multiai  (dependiendo de electron-builder)
+  /usr/bin/multiai (acceso directo)
