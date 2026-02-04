@@ -1,6 +1,6 @@
 {
   "name": "cardinal-ai",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "CardinalAI MultiModel App es una aplicación de escritorio que permite a los usuarios interactuar con múltiples modelos de IA de CardinalAI (de StormGamesStudios), proporcionando una interfaz fácil de usar para generar y gestionar contenido generado por inteligencia artificial.",
   "main": "src/main.js",
   "scripts": {
@@ -87,7 +87,6 @@
       "vendor": "StormGamesStudios",
       "synopsis": "Aplicación de asistente de IA",
       "description": "Centro de asistente de la inteligencia artificial CardinalAI",
-      "executableArgs": ["--no-sandbox"],
       "desktop": {
         "entry": {
           "Name": "CardinalAI",
