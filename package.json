@@ -1,6 +1,6 @@
 {
   "name": "cardinal-ai",
-  "version": "1.0.6",
+  "version": "1.0.4",
   "description": "CardinalAI MultiModel App es una aplicación de escritorio que permite a los usuarios interactuar con múltiples modelos de IA de CardinalAI (de StormGamesStudios), proporcionando una interfaz fácil de usar para generar y gestionar contenido generado por inteligencia artificial.",
   "main": "src/main.js",
   "scripts": {
@@ -16,11 +16,11 @@
     "build:mac": "electron-builder --mac"
   },
   "dependencies": {
-    "electron-updater": "^6.7.3"
+    "electron-updater": "^6.8.3"
   },
   "devDependencies": {
-    "electron": "^40.1.0",
-    "electron-builder": "^26.7.0"
+    "electron": "^40.8.0",
+    "electron-builder": "^26.8.1"
   },
   "homepage": "https://github.com/acierto-incomodo/cardinal-ai-dualmodel-app",
   "repository": {
@@ -67,7 +67,7 @@
         "msi"
       ],
       "icon": "icons/icon.ico",
-      "artifactName": "CardinalAI-${version}-${arch}.${ext}"
+      "artifactName": "CardinalAI.${ext}"
     },
     "nsis": {
       "oneClick": true,
